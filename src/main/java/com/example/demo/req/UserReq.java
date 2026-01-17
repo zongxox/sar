@@ -13,5 +13,4 @@ public class UserReq {
     private String creUser;
     private String creDate;
     private String updUser;
-    private String updDate
 }
