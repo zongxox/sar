@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FruitRepository {
@@ -447,6 +449,48 @@ public class FruitRepository {
 
     }
 
+    // 查詢檔案路徑 + 檔案名稱
+    //傳入水果資料的 id，回傳 路徑+檔名 的 M
+    public Map<String, String> queryFileInfo(Long id) {
+        //SQL：用 ID 查 FRUIT_CODE(檔名) 和 FRUIT_TYPE(路徑)
+        String sql = "SELECT FRUIT_CODE,FRUIT_TYPE FROM fruit WHERE ID = ?";
+
+        //從 dataSource 取得資料庫連線（try-with-resources 自動關閉）
+        try (Connection conn = dataSource.getConnection();
+             //預備 SQL 語法（PreparedStatement 可避免 SQL Injection）
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            //把 SQL 裡的第 1 個 ? 參數帶入 id
+            ps.setLong(1, id);
+                //執行查詢，回傳 ResultSet（查詢結果）
+            try (ResultSet rs = ps.executeQuery()) {
+
+                //rs.next() 會移到第一筆資料；如果沒有資料表示查不到
+                //查不到該 id 就回傳 null（表示沒檔案資訊）
+                if (!rs.next()) {
+                    return null;
+                }
+
+                //從查詢結果取出 FRUIT_TYPE 欄位值（代表檔案路徑）
+                String dirPath = rs.getString("FRUIT_TYPE");
+                //從查詢結果取出 FRUIT_CODE 欄位值（代表檔案名稱）
+                String fileName = rs.getString("FRUIT_CODE");
+                //建立一個 Map 來裝路徑與檔名
+                Map<String, String> map = new HashMap<>();
+                map.put("dirPath", dirPath);//把路徑放進 map，key 叫 "dirPath"
+                map.put("fileName", fileName);// 把檔名放進 map，key 叫 "fileName"
+                return map; //回傳 map 給 service 使用
+            }
+
+        } catch (Exception e) {//發生任何例外（SQL錯誤、連線失敗、欄位錯等等）
+            //包成 RuntimeException 丟出去，方便看錯誤原因
+            throw new RuntimeException("FruitRepository queryFileInfo 失敗：" + e.getMessage(), e);
+        }
+    }
+
+
 
 }
+
+
+
 

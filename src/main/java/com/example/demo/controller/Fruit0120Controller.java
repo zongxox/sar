@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.req.*;
-import com.example.demo.res.*;
+import com.example.demo.res.FruitInit0120Res;
+import com.example.demo.res.FruitQuery0120Res;
+import com.example.demo.res.FruitUpdQuery0120Res;
 import com.example.demo.servicec.Fruit0120Service;
-import com.example.demo.servicec.User0119Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,9 +53,17 @@ public class Fruit0120Controller {
         return fruit0120Service.updQuery(req);
     }
 
+    //修改按鈕
     @PostMapping("/update")
     public int update(@RequestBody FruitUpd0120Req req) {
         return fruit0120Service.update(req);
+    }
+
+
+    //下載
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> download(@PathVariable Long id) {
+        return fruit0120Service.download(id);
     }
 
 
