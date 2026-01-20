@@ -32,3 +32,38 @@ VALUES
 ('周佩珊', '123456', 'user008', '04', 'user008@gmail.com', '基隆市仁愛區愛一路77號', '320', 'system', NOW(), 'system', NOW()),
 ('趙冠宇', '123456', 'user009', '04', 'user009@gmail.com', '嘉義市西區文化路120號', '320', 'system', NOW(), 'system', NOW()),
 ('蔡欣怡', '123456', 'user010', '04', 'user010@gmail.com', '屏東縣屏東市自由路10號', '320', 'system', NOW(), 'system', NOW());
+
+
+#############################################################
+CREATE TABLE fruit (
+  ID BIGINT AUTO_INCREMENT PRIMARY KEY,  -- 主鍵自增
+
+  FRUIT_NAME VARCHAR(50) NOT NULL,       -- 水果名稱
+  FRUIT_CODE VARCHAR(50) NOT NULL,       -- 水果代碼
+  FRUIT_TYPE VARCHAR(50),                -- 種類
+  PRICE INT,                             -- 價格(對應 Java Integer)
+  QUANTITY INT,                          -- 數量
+  ORIGIN VARCHAR(100),                   -- 產地
+  REMARK VARCHAR(200),                   -- 備註
+
+  CRE_USER VARCHAR(50),                  -- 建立人
+  CRE_DATE DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 建立時間
+
+  UPD_USER VARCHAR(50),                  -- 更新人
+  UPD_DATE DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- 更新時間
+);
+
+
+INSERT INTO fruit
+(fruit_name, fruit_code, fruit_type, price, quantity, origin, remark, cre_user, cre_date, upd_user, upd_date)
+VALUES
+('蘋果', 'F001', '仁果類', 100, 100, '台灣', '甜脆好吃', 'admin', NOW(), 'admin', NOW()),
+('香蕉', 'F002', '熱帶水果', 100, 100, '菲律賓', '熟度剛好', 'admin', NOW(), 'admin', NOW()),
+('芒果', 'F003', '熱帶水果', 100, 100, '台灣', '愛文芒果', 'admin', NOW(), 'admin', NOW()),
+('葡萄', 'F004', '漿果類', 100, 100, '智利', '無籽葡萄', 'admin', NOW(), 'admin', NOW()),
+('橘子', 'F005', '柑橘類', 100, 50, '台灣', '酸甜適中', 'admin', NOW(), 'admin', NOW()),
+('鳳梨', 'F006', '熱帶水果', 200, 50, '台灣', '金鑽鳳梨', 'admin', NOW(), 'admin', NOW()),
+('西瓜', 'F007', '瓜果類', 200, 50, '台灣', '夏天必備', 'admin', NOW(), 'admin', NOW()),
+('奇異果', 'F008', '漿果類', 300, 200, '紐西蘭', '綠肉奇異果', 'admin', NOW(), 'admin', NOW()),
+('草莓', 'F009', '漿果類', 200, 200, '台灣', '大顆香甜', 'admin', NOW(), 'admin', NOW()),
+('梨子', 'F010', '仁果類', 200, 200, '日本', '多汁清甜', 'admin', NOW(), 'admin', NOW());
