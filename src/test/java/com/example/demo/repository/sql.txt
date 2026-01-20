@@ -4,7 +4,7 @@ CREATE TABLE `USER` (
   `PASSWORD` VARCHAR(100),
   `ACCOUNT` VARCHAR(50),
   `PHONE` VARCHAR(20),
-  `MAIL` VARCHAR(100),
+  `EMAIL` VARCHAR(100),
 
   `ADDRESS` VARCHAR(255),         -- ✅ 地址
   `ZIPCODES` VARCHAR(255),        -- ✅ 多選郵遞區號 (用逗號存)
