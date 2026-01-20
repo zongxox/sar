@@ -30,7 +30,7 @@ public class Fruit0120Service {
             fruitInit0120Res.add(res);
         }
 
-        //return fruitInit0120Res;
+        return fruitInit0120Res;
     }
 
 
