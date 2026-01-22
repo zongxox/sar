@@ -107,11 +107,6 @@ VALUES
 
 
 
-
-
-
-
-
 CREATE TABLE CODE_TYPE (
     ID BIGINT PRIMARY KEY AUTO_INCREMENT,         -- 主鍵
     TYPE VARCHAR(30) NOT NULL,                    -- 類型：例如 AUTHOR / CATEGORY / STATUS
@@ -140,7 +135,76 @@ INSERT INTO code_type (TYPE, CODE, CONTENT) VALUES
 ('author',   'a10',   '小明');
 
 
-    id
-    AUTHOR VARCHAR(50) NOT NULL,                  -- 4 作者 下拉
-    CATEGORY VARCHAR(30) NOT NULL,                -- 5 多選
-    STATUS TINYINT DEFAULT 1,                     -- 9 狀態(1=公開,0=隱藏)
+
+##################################
+CREATE TABLE PRODUCT (
+    ID BIGINT AUTO_INCREMENT PRIMARY KEY,              -- 商品ID
+    NAME VARCHAR(100) NOT NULL,                         -- 商品名稱
+    DESCRIPTION VARCHAR(500),                           -- 商品描述
+    PRICE INT NOT NULL,                                 -- 商品價格(整數)
+    STOCK INT NOT NULL DEFAULT 0,                       -- 庫存數量
+    CATEGORY VARCHAR(50),                               -- 商品分類
+    BRAND VARCHAR(50),                                  -- 商品品牌
+    SKU VARCHAR(50) UNIQUE,                             -- 商品編號(SKU)
+    STATUS VARCHAR(20) DEFAULT 'onsale',                -- 商品狀態
+    CREATED_TIME DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 建立時間
+    UPDATED_TIME DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新時間
+);
+
+
+INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, STOCK, CATEGORY, BRAND, SKU, STATUS) VALUES
+('iPhone 15', '蘋果最新手機', 29900.00, 50, 'tech', 'apple', 'SKU-TECH-001', 'onsale'),
+('Galaxy S24', '三星旗艦手機', 27900.00, 40, 'tech', 'samsung', 'SKU-TECH-002', 'onsale'),
+('Sony WH-1000XM5', '降噪耳機', 10990.00, 30, 'tech', 'sony', 'SKU-TECH-003', 'onsale'),
+('Nike Air Max', '氣墊運動鞋', 3990.00, 80, 'sport', 'nike', 'SKU-SPRT-001', 'onsale'),
+('Adidas Ultraboost', '跑步鞋', 5290.00, 60, 'sport', 'adidas', 'SKU-SPRT-002', 'onsale'),
+('Uniqlo 發熱衣', '冬季保暖必備', 590.00, 120, 'life', 'uniqlo', 'SKU-LIFE-001', 'onsale'),
+('健身瑜伽墊', '防滑加厚瑜伽墊', 799.00, 90, 'sport', 'nike', 'SKU-SPRT-003', 'onsale'),
+('保溫杯', '304不鏽鋼保溫杯', 650.00, 100, 'life', 'sony', 'SKU-LIFE-002', 'onsale'),
+('電動牙刷', '高頻震動清潔', 1290.00, 55, 'health', 'apple', 'SKU-HLTH-001', 'onsale'),
+('空氣清淨機', '過濾PM2.5', 6990.00, 25, 'health', 'samsung', 'SKU-HLTH-002', 'onsale'),
+('有機燕麥片', '健康早餐燕麥', 189.00, 200, 'food', 'uniqlo', 'SKU-FOOD-001', 'onsale'),
+('低糖豆漿', '低糖高蛋白', 45.00, 300, 'food', 'apple', 'SKU-FOOD-002', 'onsale'),
+('膠原蛋白飲', '美妝保養飲品', 999.00, 70, 'beauty', 'samsung', 'SKU-BEAU-001', 'onsale'),
+('洗面乳', '溫和清潔不刺激', 250.00, 150, 'beauty', 'sony', 'SKU-BEAU-002', 'onsale'),
+('防曬乳', 'SPF50+ 防曬', 399.00, 110, 'beauty', 'adidas', 'SKU-BEAU-003', 'onsale'),
+('運動毛巾', '吸汗快乾', 199.00, 140, 'sport', 'nike', 'SKU-SPRT-004', 'offsale'),
+('筆電包', '防震保護筆電', 890.00, 45, 'tech', 'uniqlo', 'SKU-TECH-004', 'onsale'),
+('藍牙音響', '重低音藍牙喇叭', 1590.00, 35, 'tech', 'sony', 'SKU-TECH-005', 'offsale'),
+('健康體重計', '可測體脂', 1299.00, 20, 'health', 'samsung', 'SKU-HLTH-003', 'onsale'),
+('咖啡豆', '中烘焙香氣濃', 320.00, 0, 'food', 'apple', 'SKU-FOOD-003', 'offsale');
+
+
+
+
+
+CREATE TABLE PRODUCT_CODE (
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,      -- 主鍵
+    TYPE VARCHAR(30) NOT NULL,                 -- 類型：category / brand / status
+    CODE VARCHAR(30) NOT NULL,                 -- 代碼
+    CONTENT VARCHAR(50) NOT NULL               -- 顯示內容
+);
+
+
+INSERT INTO PRODUCT_CODE (TYPE, CODE, CONTENT) VALUES
+-- 商品狀態 status
+('status',   'onsale',   '上架中'),
+('status',   'offsale',  '下架'),
+
+
+-- 商品分類 category
+('category', 'life',     '生活'),
+('category', 'tech',     '科技'),
+('category', 'food',     '美食'),
+('category', 'health',   '健康'),
+('category', 'sport',    '運動'),
+('category', 'beauty',   '美妝'),
+
+-- 商品品牌 brand
+('brand',    'apple',    'Apple'),
+('brand',    'samsung',  'Samsung'),
+('brand',    'sony',     'Sony'),
+('brand',    'nike',     'Nike'),
+('brand',    'adidas',   'Adidas'),
+('brand',    'uniqlo',   'Uniqlo');
+
