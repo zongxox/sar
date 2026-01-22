@@ -67,3 +67,80 @@ VALUES
 ('奇異果', 'F008', '漿果類', 300, 200, '紐西蘭', '綠肉奇異果', 'admin', NOW(), 'admin', NOW()),
 ('草莓', 'F009', '漿果類', 200, 200, '台灣', '大顆香甜', 'admin', NOW(), 'admin', NOW()),
 ('梨子', 'qwe.zip', 'C:\Users\aresc\Desktop', 200, 200, '日本', '多汁清甜', 'admin', NOW(), 'admin', NOW());
+
+####################################
+CREATE TABLE post (
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,         -- 1 主鍵
+
+    TITLE VARCHAR(100) NOT NULL,                  -- 2 標題
+    CONTENT TEXT NOT NULL,                        -- 3 內容
+    CODE VARCHAR(30) NOT NULL,                    -- 作者代碼 (例如 a01 / a02)
+
+    CATEGORY VARCHAR(30) NOT NULL,                -- 分類代碼 (例如 c01 / c02)
+    TAGS VARCHAR(100),                            -- 標籤
+
+    VIEWS INT DEFAULT 0,                          -- 瀏覽數
+    LIKES INT DEFAULT 0,                          -- 按讚數
+
+    STATUS INT DEFAULT 1,                         -- 狀態(1=公開,0=隱藏)
+
+    CREATED_TIME DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_TIME DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+INSERT INTO post
+(TITLE, CONTENT, CODE, CATEGORY, TAGS, VIEWS, LIKES, STATUS)
+VALUES
+('早餐分享', '今天吃蛋餅跟豆漿～',            'a01', 'food',   '早餐,日常',        12,  2, 1),
+('Spring Boot 教學', '介紹 JPA 與 Controller', 'a02', 'tech',   'Java,Spring',     88, 10, 1),
+('健康飲食', '少油少糖，喝水多一點',          'a03', 'health', '健康,飲食',        33,  5, 1),
+('美食推薦', '這家拉麵真的超好吃',            'a04', 'food',   '拉麵,推薦',        55,  9, 1),
+('生活小確幸', '下班散步很舒服',              'a05', 'life',   '散步,日常',        20,  1, 1),
+('Angular 表單', 'Reactive Form 常見錯誤整理', 'a06', 'tech',   'Angular,表單',   101, 18, 1),
+('運動紀錄', '今天跑步 30 分鐘',              'a07', 'health', '運動,跑步',        40,  3, 1),
+('深夜美食', '宵夜炸雞配可樂太快樂',          'a08', 'food',   '宵夜,炸雞',        70,  7, 0),
+('寫程式心得', 'debug 雖然痛苦但會進步',      'a09', 'tech',   '心得,debug',       60,  6, 1),
+('週末生活', '整理房間 + 看電影',             'a10', 'life',   '週末,整理',        25,  4, 1);
+
+
+
+
+
+
+
+
+
+CREATE TABLE CODE_TYPE (
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,         -- 主鍵
+    TYPE VARCHAR(30) NOT NULL,                    -- 類型：例如 AUTHOR / CATEGORY / STATUS
+    CODE VARCHAR(30) NOT NULL,
+    CONTENT VARCHAR(50) NOT NULL                 -- 內容：例如 小明 / 技術 / 公開
+);
+
+INSERT INTO code_type (TYPE, CODE, CONTENT) VALUES
+('status',   '0',     '0'),
+('status',   '1',     '1'),
+
+('category', 'life',  '生活'),
+('category', 'tech',  '技術'),
+('category', 'food',  '美食'),
+('category', 'health','健康'),
+
+('author',   'a01',   '小明'),
+('author',   'a02',   '阿華'),
+('author',   'a03',   '小美'),
+('author',   'a04',   '小強'),
+('author',   'a05',   '阿杰'),
+('author',   'a06',   '阿倫'),
+('author',   'a07',   '小芳'),
+('author',   'a08',   '阿偉'),
+('author',   'a09',   '小琳');
+('author',   'a10',   '小明');
+
+
+    id
+    AUTHOR VARCHAR(50) NOT NULL,                  -- 4 作者 下拉
+    CATEGORY VARCHAR(30) NOT NULL,                -- 5 多選
+    STATUS TINYINT DEFAULT 1,                     -- 9 狀態(1=公開,0=隱藏)
