@@ -1,7 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.dao.*;
-import com.example.demo.req.ProducQuery0122Req;
+import com.example.demo.req.EventRegistrationQuery0123Req;
 import com.example.demo.req.ProductUpdQuery0122Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,20 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProductRepository {
+public class EventRegistration0123Repository {
 
     @Autowired
     private DataSource dataSource;
 
     /*init查詢*/
-    public List<ProductInit0122DAO> init() {
+    public List<EventRegistrationInit0123DAO> init() {
         String sql =
-                "SELECT " +
-                        "  e.CODE AS BRAND_CODE, e.CONTENT AS BRAND_CONTENT " +
-                        "FROM PRODUCT p " +
-                        "LEFT JOIN PRODUCT_CODE e ON e.TYPE='brand' AND e.CODE = p.BRAND ";
+                "SELECT  e.CODE, e.CONTENT FROM event_registration p " +
+                "LEFT JOIN member_detail e ON e.TYPE='event_name' AND e.CODE = p.event_name ";
 
-        List<ProductInit0122DAO> list = new ArrayList<>();
+        List<EventRegistrationInit0123DAO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -36,10 +34,9 @@ public class ProductRepository {
 
             rs = ps.executeQuery();//查詢出的結果
             while (rs.next()) {//將每一筆結果放到 dao
-                ProductInit0122DAO dao = new ProductInit0122DAO();
-                dao.setBrandCode(rs.getString("BRAND_CODE"));
-                dao.setBrandContent(rs.getString("BRAND_CONTENT"));
-
+                EventRegistrationInit0123DAO dao = new EventRegistrationInit0123DAO();
+                dao.setEventNameCode(rs.getString(1));
+                dao.setEventNameContent(rs.getString(2));
                 list.add(dao);
             }
         } catch (SQLException e) {
@@ -64,15 +61,14 @@ public class ProductRepository {
         }
         return list;
     }
+
     /*init查詢*/
-    public List<ProductInit0122DAO> init1() {
+    public List<EventRegistrationInit0123DAO> init1() {
         String sql =
-                "SELECT " +
-                        "  c.CODE AS STATUS_CODE, c.CONTENT AS STATUS_CONTENT " +
-                        "FROM PRODUCT p " +
-                        "LEFT JOIN PRODUCT_CODE c ON c.TYPE='status' AND c.CODE = p.STATUS ";
+                "SELECT  e.CODE, e.CONTENT FROM event_registration p " +
+                        "LEFT JOIN member_detail e ON e.TYPE='status_code' AND e.CODE = p.status_code ";
 
-        List<ProductInit0122DAO> list = new ArrayList<>();
+        List<EventRegistrationInit0123DAO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -83,16 +79,9 @@ public class ProductRepository {
 
             rs = ps.executeQuery();//查詢出的結果
             while (rs.next()) {//將每一筆結果放到 dao
-                ProductInit0122DAO dao = new ProductInit0122DAO();
-                dao.setStatusCode(rs.getString("STATUS_CODE"));
-                dao.setStatusContent(rs.getString("STATUS_CONTENT"));
-
-//                dao.setCategoryCode(rs.getString("CATEGORY_CODE"));
-//                dao.setCategoryContent(rs.getString("CATEGORY_CONTENT"));
-//
-//                dao.setBrandCode(rs.getString("BRAND_CODE"));
-//                dao.setBrandContent(rs.getString("BRAND_CONTENT"));
-
+                EventRegistrationInit0123DAO dao = new EventRegistrationInit0123DAO();
+                dao.setStatusCode(rs.getString(1));
+                dao.setStatusContent(rs.getString(2));
                 list.add(dao);
             }
         } catch (SQLException e) {
@@ -119,14 +108,12 @@ public class ProductRepository {
     }
 
 
-    public List<ProductInit0122DAO> init2() {
+    public List<EventRegistrationInit0123DAO> init2() {
         String sql =
-                "SELECT " +
-                        "  d.CODE AS CATEGORY_CODE, d.CONTENT AS CATEGORY_CONTENT " +
-                        "FROM PRODUCT p " +
-                        "LEFT JOIN PRODUCT_CODE d ON d.TYPE='category' AND d.CODE = p.CATEGORY ";
+                "SELECT  e.CODE, e.CONTENT FROM event_registration p " +
+                        "LEFT JOIN member_detail e ON e.TYPE='option_codes' AND e.CODE = p.option_codes ";
 
-        List<ProductInit0122DAO> list = new ArrayList<>();
+        List<EventRegistrationInit0123DAO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -137,10 +124,9 @@ public class ProductRepository {
 
             rs = ps.executeQuery();//查詢出的結果
             while (rs.next()) {//將每一筆結果放到 dao
-                ProductInit0122DAO dao = new ProductInit0122DAO();
-                dao.setCategoryCode(rs.getString("CATEGORY_CODE"));
-                dao.setCategoryContent(rs.getString("CATEGORY_CONTENT"));
-
+                EventRegistrationInit0123DAO dao = new EventRegistrationInit0123DAO();
+                dao.setOptionCodesCode((rs.getString(1)));
+                dao.setOptionCodesContent((rs.getString(2)));
                 list.add(dao);
             }
         } catch (SQLException e) {
@@ -170,15 +156,17 @@ public class ProductRepository {
 
 
     /*查詢按鈕*/
-    public List<ProductQuery0122DAO> query(ProducQuery0122Req req) {
-        StringBuilder sql = new StringBuilder(
-                "SELECT p.ID, p.NAME, p.DESCRIPTION, p.PRICE, p.STOCK, " +
-                        "d.CONTENT, e.CONTENT, p.SKU, c.CONTENT, " +
-                        "p.CREATED_TIME, p.UPDATED_TIME " +
-                        "FROM product p " +
-                        "LEFT JOIN product_code c ON p.STATUS = c.CODE " +
-                        "LEFT JOIN product_code d ON p.CATEGORY = d.CODE " +
-                        "LEFT JOIN product_code e ON p.BRAND = e.CODE " +
+    public List<EventRegistrationQueryDAO> query(EventRegistrationQuery0123Req req) {
+                StringBuilder sql = new StringBuilder(
+                "SELECT e.member_id, e.event_code, " +
+                        "DATE_FORMAT(e.register_time,'%Y-%m-%d %H:%i:%s'), " +
+                        "DATE_FORMAT(e.cancel_time,'%Y/%m/%d '), " +
+                        "DATE_FORMAT(e.update_time,'%H:%i:%s'), " +
+                        "c.CONTENT , d.CONTENT , e.phone, e.email, e.note, f.CONTENT " +
+                        "FROM event_registration e " +
+                        "LEFT JOIN member_detail c ON e.event_name = c.CODE AND c.TYPE='event_name' " +
+                        "LEFT JOIN member_detail d ON e.status_code = d.CODE AND d.TYPE='status_code' " +
+                        "LEFT JOIN member_detail f ON e.option_codes = f.CODE AND f.TYPE='option_codes' " +
                         "WHERE 1=1 "
         );
 
@@ -186,39 +174,43 @@ public class ProductRepository {
 
         List<Object> params = new ArrayList<>();
 
-        // id 如果前端傳遞過來 不是null 就將條件加入到sql
-        if (req.getName() != null && !req.getName().trim().isEmpty()) {
-            sql.append(" AND p.NAME = ? ");
-            params.add(req.getName().trim());
+
+        if (req.getRegisterTime() != null && !req.getRegisterTime().trim().isEmpty()
+                && req.getCancelTime() != null && !req.getCancelTime().trim().isEmpty()) {
+            sql.append(" AND DATE_FORMAT(e.register_time,'%Y%m%d') BETWEEN ? AND ? ");
+            params.add(req.getRegisterTime().trim()); // 起日 20260101
+            params.add(req.getCancelTime().trim());   // 迄日 20260105
+        }
+
+
+
+
+        if (req.getStatusCode() != null && !req.getStatusCode().trim().isEmpty()) {
+            sql.append(" AND e.status_code = ? ");
+            params.add(req.getStatusCode().trim());
         }
 
         // id 如果前端傳遞過來 不是null 就將條件加入到sql
-        if (req.getBrand() != null && !req.getBrand().trim().isEmpty()) {
-            sql.append(" AND p.BRAND = ? ");
-            params.add(req.getBrand().trim());
+        if (req.getEventName()!= null && !req.getEventName().trim().isEmpty()) {
+            sql.append(" AND e.event_name = ? ");
+            params.add(req.getEventName().trim());
         }
 
-        // id 如果前端傳遞過來 不是null 就將條件加入到sql
-        if (req.getStatus() != null && !req.getStatus().trim().isEmpty()) {
-            sql.append(" AND p.STATUS = ? ");
-            params.add(req.getStatus().trim());
-        }
-
-        if (req.getCategory() != null && !req.getCategory().isEmpty()) {
-            sql.append(" AND p.CATEGORY IN (");
-            for (int i = 0; i < req.getCategory().size(); i++) {
+        if (req.getOptionCodes() != null && !req.getOptionCodes().isEmpty()) {
+            sql.append(" AND e.option_codes IN (");
+            for (int i = 0; i < req.getOptionCodes().size(); i++) {
                 sql.append("?");
-                if (i < req.getCategory().size() - 1) {
+                if (i < req.getOptionCodes().size() - 1) {
                     sql.append(",");
                 }
-                params.add(req.getCategory().get(i).trim());
+                params.add(req.getOptionCodes().get(i).trim());
             }
             sql.append(") ");
         }
 
-        sql.append(" ORDER BY p.UPDATED_TIME , p.ID  ");
+        sql.append(" ORDER BY e.member_id");
 
-        List<ProductQuery0122DAO> list = new ArrayList<>();
+        List<EventRegistrationQueryDAO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -235,18 +227,18 @@ public class ProductRepository {
 
             rs = ps.executeQuery();//查詢出的結果
             while (rs.next()) {//將每一筆結果放到 dao
-                ProductQuery0122DAO dao = new ProductQuery0122DAO();
-                dao.setId(rs.getLong(1));
-                dao.setName(rs.getString(2));
-                dao.setDescription(rs.getString(3));
-                dao.setPrice(rs.getInt(4));
-                dao.setStock(rs.getInt(5));
-                dao.setCategory(rs.getString(6));
-                dao.setBrand(rs.getString(7));
-                dao.setSku(rs.getString(8));
-                dao.setStatus(rs.getString(9));
-                dao.setCreatedTime(rs.getTimestamp(10).toLocalDateTime());
-                dao.setUpdatedTime(rs.getTimestamp(11).toLocalDateTime());
+                EventRegistrationQueryDAO dao = new EventRegistrationQueryDAO();
+                dao.setMemberId(rs.getLong(1));
+                dao.setEventCode(rs.getString(2));
+                dao.setRegisterTime(rs.getString(3));
+                dao.setCancelTime(rs.getString(4));
+                dao.setUpdateTime(rs.getString(5));
+                dao.setEventName(rs.getString(6));     // c.CONTENT
+                dao.setStatusCode(rs.getString(7));    // d.CONTENT
+                dao.setPhone(rs.getString(8));
+                dao.setEmail(rs.getString(9));
+                dao.setNote(rs.getString(10));
+                dao.setOptionCodes(rs.getString(11));  // f.CONTENT
                 list.add(dao);//把每一筆的res 循環結果放到list
             }
         } catch (SQLException e) {
@@ -272,29 +264,28 @@ public class ProductRepository {
         return list;
     }
 
-    //刪除
-    public int deleteById(ProductDel0122DAO dao) {
-        String sql = "DELETE FROM product WHERE ID = ?";
+//    //刪除
+//    public int deleteById(ProductDel0122DAO dao) {
+//        String sql = "DELETE FROM product WHERE ID = ?";
+//
+//
+//        try (Connection conn = dataSource.getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setLong(1,dao.getId());
+//            return ps.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            throw new RuntimeException("刪除失敗: " + e.getMessage(), e);
+//        }
+//    }
 
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setLong(1,dao.getId());
-            return ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("刪除失敗: " + e.getMessage(), e);
-        }
-    }
-
-
-
-    //新增
-    public int insert(ProductIns0122DAO dao) {
-        String sql = "INSERT INTO product " +
-                "(NAME, DESCRIPTION, PRICE, STOCK, CATEGORY, BRAND, SKU, STATUS, CREATED_TIME, UPDATED_TIME) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    //主表新增
+    public int insert(EventRegistrationIns0123DAO dao) {
+        String sql = "INSERT INTO event_registration(member_id, event_code, register_time,event_name, status_code, phone, email, note, option_codes, cancel_time,update_time)" +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 
         Connection conn = null;
@@ -304,16 +295,17 @@ public class ProductRepository {
         try{
             conn = dataSource.getConnection();//連線數據庫
             ps = conn.prepareStatement(sql);
-            ps.setString(1,dao.getName());
-            ps.setString(2,dao.getDescription());
-            ps.setInt(3,dao.getPrice());
-            ps.setInt(4,dao.getStock());
-            ps.setString(5, String.join(",", dao.getCategory()));
-            ps.setString(6,dao.getBrand());
-            ps.setString(7,dao.getSku());
-            ps.setString(8, dao.getStatus());
-            ps.setTimestamp(9, Timestamp.valueOf(dao.getCreatedTime()));
-            ps.setTimestamp(10, Timestamp.valueOf(dao.getUpdatedTime()));
+            ps.setLong(1, dao.getMemberId());
+            ps.setString(2, dao.getEventCode());
+            ps.setTimestamp(3, dao.getRegisterTime());
+            ps.setString(4, dao.getEventName());
+            ps.setString(5, dao.getStatusCode());
+            ps.setString(6, dao.getPhone());
+            ps.setString(7, dao.getEmail());
+            ps.setString(8, dao.getNote());
+            ps.setString(9, String.join(",", dao.getOptionCodes()));
+            ps.setTimestamp(10, dao.getCancelTime());
+            ps.setTimestamp(11, dao.getUpdateTime());
             rows = ps.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -333,6 +325,51 @@ public class ProductRepository {
         return rows;
     }
 
+
+    //副表新增
+    public int insert1(MemberDetail0123DAO dao) {
+
+        String sql = "INSERT INTO member_detail(member_id,name,gender,phone,id_number,birth_date,address,hobby ) " +
+                "VALUES (?, ?, ?, ?,?,?,?,?);";
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int rows = 0;
+
+        try{
+            conn = dataSource.getConnection();//連線數據庫
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1,dao.getMemberId());
+            ps.setString(2,dao.getName());
+            ps.setString(3,dao.getGender());
+            ps.setString(4,dao.getPhone());
+            ps.setString(5,dao.getIdNumber());
+            if (dao.getBirthDate() != null) {
+                ps.setDate(6, new java.sql.Date(dao.getBirthDate().getTime()));
+            } else {
+                ps.setDate(6, null);
+            }
+
+            ps.setString(7,dao.getAddress());
+            ps.setString(8,dao.getHobby());
+            rows = ps.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("新增失敗: " + e.getMessage(), e);
+        }finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return rows;
+    }
 
     //跳轉修改先查詢
     public ProductUpdQuery0122DAO updQuery(ProductUpdQuery0122Req req) {

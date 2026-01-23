@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.req.*;
-        import com.example.demo.res.ProductInit0122Res;
-import com.example.demo.res.ProductQuery0121Res;
-import com.example.demo.res.ProductUpdQuery0122Res;
+import com.example.demo.res.*;
 import com.example.demo.servicec.Product0122Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -20,6 +18,16 @@ public class Product0122Controller {
     @GetMapping("/initSelect")
     public List<ProductInit0122Res> init(){
         return product0122Service.init();
+    }
+
+    @GetMapping("/initSelect1")
+    public List<ProductInit10122Res> init1(){
+        return product0122Service.init1();
+    }
+
+    @GetMapping("/initSelect2")
+    public List<ProductInit20122Res> init2(){
+        return product0122Service.init2();
     }
 
     //查詢按鈕

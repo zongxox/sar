@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductInit0122Res {
-    private String brandCode;
-    private String brandContent;
-
-
+public class EventRegistrationInit0123Res {
+    private String eventNameCode;
+    private String eventNameContent;
 }

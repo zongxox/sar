@@ -208,3 +208,89 @@ INSERT INTO PRODUCT_CODE (TYPE, CODE, CONTENT) VALUES
 ('brand',    'adidas',   'Adidas'),
 ('brand',    'uniqlo',   'Uniqlo');
 
+############################
+CREATE TABLE event_registration (
+    member_id       BIGINT NOT NULL,         -- PK1 會員ID
+    event_code      VARCHAR(20) NOT NULL,     -- PK2 活動代碼
+    register_time   DATETIME NOT NULL,        -- PK3 報名時間
+
+    event_name      VARCHAR(100) NOT NULL,    -- 活動名稱       下拉式
+    status_code     VARCHAR(20) NOT NULL,     -- 狀態(報名/取消) 單選框
+    phone           VARCHAR(20),              -- 聯絡電話
+    email           VARCHAR(100),             -- Email
+    note            VARCHAR(200),             -- 備註
+
+    option_codes    VARCHAR(200),             -- 多選框  附加選項
+
+    cancel_time     DATETIME,                 -- 取消時間
+    update_time     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 更新時間
+
+    PRIMARY KEY (member_id, event_code, register_time)
+);
+
+INSERT INTO event_registration
+(member_id, event_code, register_time, event_name, status_code, phone, email, note, option_codes, cancel_time)
+VALUES
+(1001, 'E001', '2026-01-01 09:00:00', 'E001', 'REG',    '0912345678', 'user1001@gmail.com', '第一次報名', 'OPT_MEAL',     NULL),
+
+(1002, 'E002', '2026-01-02 10:30:00', 'E001', 'REG',    '0922333444', 'user1002@gmail.com', '想增強核心', 'OPT_MEAL',     NULL),
+
+(1003, 'E003', '2026-01-03 14:00:00', 'E001', 'REG',    '0933555666', 'user1003@gmail.com', '帶朋友一起', 'OPT_MEAL',     NULL),
+
+(1004, 'E001', '2026-01-04 11:00:00', 'E001', 'CANCEL', '0944666777', 'user1004@gmail.com', '臨時有事',   'OPT_DRINK',    '2026-01-04 12:00:00'),
+
+(1005, 'E004', '2026-01-05 15:30:00', 'E002', 'REG',    '0955777888', 'user1005@gmail.com', '想學插花',   'OPT_DRINK',    NULL),
+
+(1006, 'E005', '2026-01-06 16:00:00', 'E002', 'REG',    '0966888999', 'user1006@gmail.com', '想改善飲食', 'OPT_DRINK',    NULL),
+
+(1007, 'E002', '2026-01-07 13:00:00', 'E002', 'CANCEL', '0977999000', 'user1007@gmail.com', '時間衝突',   'OPT_KIT',      '2026-01-07 14:20:00'),
+
+(1008, 'E006', '2026-01-08 09:30:00', 'E003', 'REG',    '0988123123', 'user1008@gmail.com', '新手學攝影', 'OPT_KIT',      NULL),
+
+(1009, 'E007', '2026-01-09 19:00:00', 'E003', 'REG',    '0900111222', 'user1009@gmail.com', '想學拉花',   'OPT_HANDOUT',  NULL),
+
+(1010, 'E003', '2026-01-10 10:00:00', 'E003', 'REG',    '0900222333', 'user1010@gmail.com', '想做甜點',   'OPT_MATERIAL', NULL);
+
+
+CREATE TABLE member_detail (
+    member_id   BIGINT NOT NULL,             -- 會員ID (可對應會員主表)
+
+    name        VARCHAR(50) NOT NULL,         -- 姓名
+    gender      VARCHAR(10) NOT NULL,         -- 性別
+    phone       VARCHAR(20) NOT NULL,         -- 電話
+    id_number   VARCHAR(20) NOT NULL,         -- 身分證字號
+
+    birth_date  DATE,                         -- 生日
+    address     VARCHAR(200),                 -- 地址
+    hobby       VARCHAR(200),                 -- 興趣
+
+    TYPE        VARCHAR(30) NOT NULL,         -- 類型：單選/多選/下拉
+    CODE        VARCHAR(30) NOT NULL,         -- 代碼
+    CONTENT     VARCHAR(50) NOT NULL,         -- 顯示內容
+
+    PRIMARY KEY (member_id)
+);
+
+INSERT INTO member_detail
+(member_id, name, gender, phone, id_number, birth_date, address, hobby, TYPE, CODE, CONTENT)
+VALUES
+(1001, '王小明', '男', '0912345678', 'A123456789', '1998-03-15', '台北市信義區', '健身,看電影', 'event_name', 'E001', '瑜珈體驗課'),
+
+(1002, '陳美麗', '女', '0922333444', 'B223456781', '1999-07-22', '新北市板橋區', '旅遊,烘焙', 'event_name', 'E002', '皮拉提斯課程'),
+
+(1003, '林志豪', '男', '0933555666', 'C323456782', '1997-11-05', '桃園市中壢區', '打球,攝影', 'event_name', 'E003', '烘焙手作課'),
+
+(1004, '張雅婷', '女', '0944666777', 'D423456783', '2000-01-30', '台中市西屯區', '音樂,瑜珈', 'status_code', 'REG', '報名'),
+
+(1005, '李冠廷', '男', '0955777888', 'E523456784', '1996-05-18', '台南市東區', '跑步,閱讀', 'status_code', 'CANCEL', '取消'),
+
+(1006, '黃欣怡', '女', '0966888999', 'F623456785', '2001-09-12', '高雄市左營區', '閱讀,料理', 'option_codes', 'OPT_MEAL', '餐點'),
+
+(1007, '吳承翰', '男', '0977999000', 'G723456786', '1995-12-02', '新竹市東區', '打電動,電影', 'option_codes', 'OPT_DRINK', '飲料'),
+
+(1008, '蔡佩珊', '女', '0988123123', 'H823456787', '1998-08-08', '基隆市仁愛區', '攝影,旅遊', 'option_codes', 'OPT_KIT', '材料包'),
+
+(1009, '鄭柏宇', '男', '0900111222', 'I923456788', '1997-04-25', '嘉義市西區', '咖啡,健身', 'option_codes', 'OPT_HANDOUT', '講義'),
+
+(1010, '周佳蓉', '女', '0900222333', 'J103456789', '2002-02-14', '宜蘭縣羅東鎮', '瑜珈,旅遊', 'option_codes', 'OPT_MATERIAL', '教材');
+

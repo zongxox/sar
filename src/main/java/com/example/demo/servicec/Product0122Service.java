@@ -3,9 +3,7 @@ package com.example.demo.servicec;
 import com.example.demo.dao.*;
 import com.example.demo.mapper.ProductRepository;
 import com.example.demo.req.*;
-import com.example.demo.res.ProductInit0122Res;
-import com.example.demo.res.ProductQuery0121Res;
-import com.example.demo.res.ProductUpdQuery0122Res;
+import com.example.demo.res.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,30 @@ public class Product0122Service {
         }
         return res;
     }
+
+    public List<ProductInit10122Res> init1(){
+        List<ProductInit0122DAO> init = productRepository.init1();
+        List<ProductInit10122Res> res = new ArrayList<>();
+        for (ProductInit0122DAO s : init){
+            ProductInit10122Res productInit0122Res = new ProductInit10122Res();
+            BeanUtils.copyProperties(s,productInit0122Res);
+            res.add(productInit0122Res);
+        }
+        return res;
+    }
+
+
+    public List<ProductInit20122Res> init2(){
+        List<ProductInit0122DAO> init = productRepository.init2();
+        List<ProductInit20122Res> res = new ArrayList<>();
+        for (ProductInit0122DAO s : init){
+            ProductInit20122Res productInit0122Res = new ProductInit20122Res();
+            BeanUtils.copyProperties(s,productInit0122Res);
+            res.add(productInit0122Res);
+        }
+        return res;
+    }
+
 
     //查詢按鈕
     public List<ProductQuery0121Res> query(ProducQuery0122Req req){
