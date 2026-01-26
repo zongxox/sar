@@ -274,7 +274,7 @@ public class ProductRepository {
 
     //刪除
     public int deleteById(ProductDel0122DAO dao) {
-        String sql = "DELETE FROM product WHERE ID = ?";
+        String sql = "DELETE FROM event_registration WHERE ID = ?";
 
 
         try (Connection conn = dataSource.getConnection();

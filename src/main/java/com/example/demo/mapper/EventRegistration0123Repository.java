@@ -2,7 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.dao.*;
 import com.example.demo.req.EventRegistrationQuery0123Req;
-import com.example.demo.req.ProductUpdQuery0122Req;
+import com.example.demo.req.EventRegistrationUpdQuery0123Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -264,22 +264,28 @@ public class EventRegistration0123Repository {
         return list;
     }
 
-//    //刪除
-//    public int deleteById(ProductDel0122DAO dao) {
-//        String sql = "DELETE FROM product WHERE ID = ?";
-//
-//
-//        try (Connection conn = dataSource.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//            ps.setLong(1,dao.getId());
-//            return ps.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException("刪除失敗: " + e.getMessage(), e);
-//        }
-//    }
+    //刪除
+    public int deleteById(EventRegistrationDel0123DAO dao) {
+        String sql = "DELETE FROM event_registration WHERE member_id = ?";
+        String sql1 = "DELETE FROM member_detail WHERE member_id = ?";
 
+            int rows = 0;
+            int row=0;
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps1 = conn.prepareStatement(sql);
+            ps1.setLong(1,dao.getMemberId());
+            rows = ps1.executeUpdate();
+            PreparedStatement ps2 = conn.prepareStatement(sql1);
+            ps2.setLong(1,dao.getMemberId());
+            row = ps2.executeUpdate();
+            return rows + row;
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException("刪除失敗: " + e.getMessage(), e);
+        }
+    }
 
 
     //主表新增
@@ -372,43 +378,57 @@ public class EventRegistration0123Repository {
     }
 
     //跳轉修改先查詢
-    public ProductUpdQuery0122DAO updQuery(ProductUpdQuery0122Req req) {
-        String sql =
-                "SELECT p.NAME, p.DESCRIPTION, p.PRICE, p.STOCK, d.CONTENT,e.CONTENT,p.SKU, " +
-                 " c.CONTENT,p.CREATED_TIME, p.UPDATED_TIME " +
-                 "FROM product p " +
-                 "LEFT JOIN product_code c ON p.STATUS = c.CODE " +
-                 "LEFT JOIN product_code d ON p.CATEGORY = d.CODE " +
-                 "LEFT JOIN product_code e ON p.BRAND = e.CODE " +
-                 "WHERE p.ID = ? ";
+    public EventRegistrationUpdQuery0123DAO updQuery(EventRegistrationUpdQuery0123Req req) {
+        String sql = "SELECT " +
+                "e.member_id,e.event_code,e.register_time,e.event_name,e.status_code,e.phone," +
+                "e.email,e.note,e.option_codes,e.cancel_time,e.update_time," +
+                "m.member_id,m.name,m.gender,m.phone,m.id_number,m.birth_date,m.address,m.hobby " +
+                "FROM event_registration e " +
+                "LEFT JOIN member_detail m ON e.member_id = m.member_id WHERE e.member_id = ?;";
+
 
 
 
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ProductUpdQuery0122DAO dao = new ProductUpdQuery0122DAO();
+        EventRegistrationUpdQuery0123DAO dao = new EventRegistrationUpdQuery0123DAO();
 
         try {
             conn = dataSource.getConnection();//連線數據庫
             ps = conn.prepareStatement(sql);//把sql準備好之後,讓她變成一個物件
-            ps.setLong(1,req.getId());
+            ps.setLong(1,req.getMemberId());
 
             rs = ps.executeQuery();//查詢出的結果
 
 
             if (rs.next()) {
-                dao.setName(rs.getString(1));
-                dao.setDescription(rs.getString(2));
-                dao.setPrice(rs.getInt(3));
-                dao.setStock(rs.getInt(4));
-                dao.setCategory(rs.getString(5));
-                dao.setBrand(rs.getString(6));
-                dao.setSku(rs.getString(7));
-                dao.setStatus(rs.getString(8));
-                dao.setCreatedTime(rs.getTimestamp(9).toLocalDateTime());
-                dao.setUpdatedTime(rs.getTimestamp(10).toLocalDateTime());
+                // event_registration (主表)
+                dao.setEventCode(rs.getString(2));
+                dao.setRegisterTime(rs.getString(3));
+                dao.setEventName(rs.getString(4));
+                dao.setStatusCode(rs.getString(5));
+                dao.setPhone(rs.getString(6));
+                dao.setEmail(rs.getString(7));
+                dao.setNote(rs.getString(8));
+                dao.setOptionCodes(rs.getString(9));
+                dao.setCancelTime(rs.getString(10));
+                dao.setUpdateTime(rs.getString(11));
+
+                // member_detail (副表)
+                MemberDetail0123DAO m = new MemberDetail0123DAO();
+                m.setMemberId(rs.getLong(12));
+                m.setName(rs.getString(13));
+                m.setGender(rs.getString(14));
+                m.setPhone(rs.getString(15));
+                m.setIdNumber(rs.getString(16));
+                m.setBirthDate(rs.getDate(17));
+                m.setAddress(rs.getString(18));
+                m.setHobby(rs.getString(19));
+
+                dao.setMemberDetail(m);
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -434,74 +454,74 @@ public class EventRegistration0123Repository {
     }
 
     //修改
-    public int update(ProductUpd0122DAO dao) {
+    public int update(EventRegistrationUpd0123DAO dao) {
         StringBuilder sql = new StringBuilder();
-        sql.append("UPDATE product SET ");
+        sql.append("UPDATE event_registration SET ");
 
         int idx = 1;
         boolean hasSet = false;
 
         Connection conn = null;
         PreparedStatement ps = null;
-
+        PreparedStatement ps2 = null;
         try {
             // 動態 SET
-            if (dao.getName() != null) {
-                sql.append("NAME = ?");
+            if (dao.getEventCode() != null) {
+                sql.append("event_code = ?");
                 hasSet = true;
             }
-            if (dao.getDescription() != null) {
+            if (dao.getRegisterTime() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("DESCRIPTION = ?");
-                hasSet = true;
-            }
-
-
-            if (dao.getPrice() != null) {
-                if (hasSet) sql.append(", ");
-                sql.append("PRICE = ?");
+                sql.append("register_time = ?");
                 hasSet = true;
             }
 
 
-            if (dao.getStock() != null) {
+            if (dao.getEventName() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("STOCK = ?");
+                sql.append("event_name = ?");
                 hasSet = true;
             }
 
-            if (dao.getCategory() != null) {
+
+            if (dao.getStatusCode() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("CATEGORY = ?");
+                sql.append("status_code = ?");
                 hasSet = true;
             }
 
-            if (dao.getBrand() != null) {
+            if (dao.getPhone() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("BRAND = ?");
-                hasSet = true;
-            }
-            if (dao.getSku() != null) {
-                if (hasSet) sql.append(", ");
-                sql.append("SKU = ?");
+                sql.append("phone = ?");
                 hasSet = true;
             }
 
-            if (dao.getStatus() != null) {
+            if (dao.getEmail() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("STATUS = ?");
+                sql.append("email = ?");
+                hasSet = true;
+            }
+            if (dao.getNote() != null) {
+                if (hasSet) sql.append(", ");
+                sql.append("note = ?");
                 hasSet = true;
             }
 
-            if (dao.getCreatedTime() != null) {
+            if (dao.getOptionCodes() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("CREATED_TIME = ?");
+                sql.append("option_codes = ?");
                 hasSet = true;
             }
 
-            if (dao.getUpdatedTime() != null) {
+            if (dao.getCancelTime() != null) {
                 if (hasSet) sql.append(", ");
-                sql.append("UPDATED_TIME = ?");
+                sql.append("cancel_time = ?");
+                hasSet = true;
+            }
+
+            if (dao.getUpdateTime() != null) {
+                if (hasSet) sql.append(", ");
+                sql.append("update_time = ?");
                 hasSet = true;
             }
 
@@ -509,39 +529,67 @@ public class EventRegistration0123Repository {
 
 
             // WHERE
-            sql.append(" WHERE ID = ?");
+            sql.append(" WHERE member_id = ?");
 
             conn = dataSource.getConnection();
             ps = conn.prepareStatement(sql.toString());
 
             // 依序塞值（跟 SET 的順序一致）
-            if (dao.getName() != null) ps.setString(idx++, dao.getName());
-            if (dao.getDescription() != null) ps.setString(idx++, dao.getDescription());
-            if (dao.getPrice()!= null) ps.setInt(idx++, dao.getPrice());
-            if (dao.getStock() != null) ps.setInt(idx++, dao.getStock());
+            if (dao.getEventCode() != null) ps.setString(idx++, dao.getEventCode());
+            if (dao.getRegisterTime() != null) ps.setString(idx++, dao.getRegisterTime());
+            if (dao.getEventName()!= null) ps.setString(idx++, dao.getEventName());
+            if (dao.getStatusCode() != null) ps.setString(idx++, dao.getStatusCode());
 
-            if (dao.getCategory() != null) {
-                String categoryStr = dao.getCategory().stream()
-                        .filter(x -> x != null && !x.trim().isEmpty())
-                        .map(String::trim)
-                        .collect(java.util.stream.Collectors.joining(","));
-                // post.category NOT NULL：至少給空字串
-                ps.setString(idx++, categoryStr);
+
+            if (dao.getPhone() != null) ps.setString(idx++, dao.getPhone());
+            if (dao.getEmail() != null) ps.setString(idx++, dao.getEmail());
+            if (dao.getNote() != null) ps.setString(idx++, dao.getNote());
+
+            if (dao.getOptionCodes() != null) {
+                ps.setString(idx++, String.join(",", dao.getOptionCodes()));
             }
-            if (dao.getBrand() != null) ps.setString(idx++, dao.getBrand());
-            if (dao.getSku() != null) ps.setString(idx++, dao.getSku());
-            if (dao.getStatus() != null) ps.setString(idx++, dao.getStatus());
 
-            if (dao.getCreatedTime() != null)ps.setTimestamp(idx++, Timestamp.valueOf(dao.getCreatedTime()));
-
-            if (dao.getUpdatedTime() != null)ps.setTimestamp(idx++, Timestamp.valueOf(dao.getUpdatedTime()));
-
+            if (dao.getCancelTime() != null)ps.setTimestamp(idx++, Timestamp.valueOf(dao.getCancelTime()));
+            if (dao.getUpdateTime() != null)ps.setTimestamp(idx++, Timestamp.valueOf(dao.getUpdateTime()));
             //WHERE ID 不可為 null
-            if (dao.getId() == null) throw new RuntimeException("ID 不可為空");
-            ps.setLong(idx, dao.getId());
+            if (dao.getMemberId()== null) throw new RuntimeException("getMemberID 不可為空");
+            ps.setLong(idx, dao.getMemberId());
+            int updated1 = ps.executeUpdate();
 
-            return ps.executeUpdate();
 
+            MemberDetail0123DAO md = dao.getMemberDetail();
+            if (md.getMemberId() == null) md.setMemberId(dao.getMemberId()); // 沿用外層 memberId
+
+            StringBuilder sql2 = new StringBuilder();
+            sql2.append("UPDATE member_detail SET ");
+
+            int idx2 = 1;
+            boolean hasSet2 = false;
+            if (md.getName() != null) { sql2.append("name = ?"); hasSet2 = true; }
+            if (md.getGender() != null) { if (hasSet2) sql2.append(", "); sql2.append("gender = ?"); hasSet2 = true; }
+            if (md.getPhone() != null) { if (hasSet2) sql2.append(", "); sql2.append("phone = ?"); hasSet2 = true; }
+            if (md.getIdNumber() != null) { if (hasSet2) sql2.append(", "); sql2.append("id_number = ?"); hasSet2 = true; }
+            if (md.getBirthDate() != null) { if (hasSet2) sql2.append(", "); sql2.append("birth_date = ?"); hasSet2 = true; }
+            if (md.getAddress() != null) { if (hasSet2) sql2.append(", "); sql2.append("address = ?"); hasSet2 = true; }
+            if (md.getHobby() != null) { if (hasSet2) sql2.append(", "); sql2.append("hobby = ?"); hasSet2 = true; }
+            sql2.append(" WHERE member_id = ?");
+            ps2 = conn.prepareStatement(sql2.toString());
+            if (md.getName() != null) ps2.setString(idx2++, md.getName());
+            if (md.getGender() != null) ps2.setString(idx2++, md.getGender());
+            if (md.getPhone() != null) ps2.setString(idx2++, md.getPhone());
+            if (md.getIdNumber() != null) ps2.setString(idx2++, md.getIdNumber());
+            // birth_date 假設是 yyyy-MM-dd
+            if (md.getBirthDate() != null) {
+                ps2.setDate(idx2++, new java.sql.Date(md.getBirthDate().getTime()));
+            }
+
+            if (md.getAddress() != null) ps2.setString(idx2++, md.getAddress());
+            if (md.getHobby() != null) ps2.setString(idx2++, md.getHobby());
+
+            ps2.setLong(idx2, md.getMemberId());
+            int updated2 = ps2.executeUpdate();
+
+            return updated1 + updated2;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("修改失敗: " + e.getMessage(), e);
@@ -551,7 +599,55 @@ public class EventRegistration0123Repository {
         }
     }
 
+    // 查詢檔案路徑 + 檔案名稱
+    //傳入水果資料的 id，回傳 路徑+檔名 的 M
+    public EventRegistrationDon0123DAO queryFileInfo(Long memberId) {
+        //SQL：用 ID 查 FRUIT_CODE(檔名) 和 FRUIT_TYPE(路徑)
+        String sql = "SELECT phone,email FROM event_registration WHERE member_id = ?";
 
+        //從 dataSource 取得資料庫連線（try-with-resources 自動關閉）
+        try (Connection conn = dataSource.getConnection();
+             //預備 SQL 語法（PreparedStatement 可避免 SQL Injection）
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            //把 SQL 裡的第 1 個 ? 參數帶入 id
+            ps.setLong(1, memberId);
+            //執行查詢，回傳 ResultSet（查詢結果）
+            try (ResultSet rs = ps.executeQuery()) {
+
+                //rs.next() 會移到第一筆資料；如果沒有資料表示查不到
+                //查不到該 id 就回傳 null（表示沒檔案資訊）
+                if (!rs.next()) {
+                    return null;
+                }
+
+                EventRegistrationDon0123DAO dao = new EventRegistrationDon0123DAO();
+                dao.setPhone(rs.getString("phone"));
+                dao.setEmail(rs.getString("email"));
+                return dao;
+            }
+
+        } catch (Exception e) {//發生任何例外（SQL錯誤、連線失敗、欄位錯等等）
+            //包成 RuntimeException 丟出去，方便看錯誤原因
+            throw new RuntimeException("FruitRepository queryFileInfo 失敗：" + e.getMessage(), e);
+        }
+    }
+
+    //上傳
+    public void updateFileInfo(Long memberId, String email, String phone) {
+        String sql = "UPDATE event_registration SET email=?, phone=? WHERE MEMBER_ID=?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, phone);
+            ps.setLong(3, memberId);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("updateFileInfo 失敗：" + e.getMessage(), e);
+        }
+    }
 
 }
 

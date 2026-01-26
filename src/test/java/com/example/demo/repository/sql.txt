@@ -251,6 +251,8 @@ VALUES
 
 (1010, 'E003', '2026-01-10 10:00:00', 'E003', 'REG',    '0900222333', 'user1010@gmail.com', '想做甜點',   'OPT_MATERIAL', NULL);
 
+(555, '555', '2026-01-10 10:00:00', 'E003', 'REG',    'qwe.zip', 'C:\Users\aresc\Desktop', '想做甜點',   'OPT_MATERIAL', NULL);
+
 
 CREATE TABLE member_detail (
     member_id   BIGINT NOT NULL,             -- 會員ID (可對應會員主表)
@@ -268,7 +270,7 @@ CREATE TABLE member_detail (
     CODE        VARCHAR(30) NOT NULL,         -- 代碼
     CONTENT     VARCHAR(50) NOT NULL,         -- 顯示內容
 
-    PRIMARY KEY (member_id)
+    PRIMARY KEY (member_id,name,id_number)
 );
 
 INSERT INTO member_detail
@@ -294,3 +296,75 @@ VALUES
 
 (1010, '周佳蓉', '女', '0900222333', 'J103456789', '2002-02-14', '宜蘭縣羅東鎮', '瑜珈,旅遊', 'option_codes', 'OPT_MATERIAL', '教材');
 
+#################################
+CREATE TABLE ORDER_ITEM (
+    ID            BIGINT NOT NULL AUTO_INCREMENT,  -- 主鍵自增
+
+    ORDER_ID      BIGINT NOT NULL,                 -- 訂單編號
+    ITEM_ID       BIGINT NOT NULL,                 -- 商品編號
+
+    PRODUCT_NAME  VARCHAR(100) NOT NULL,           -- 商品代號（下拉式選單）
+    QUANTITY      VARCHAR(20) NOT NULL,            -- 數量代號（多選框）
+    UNIT_PRICE    INT NOT NULL,                    -- 單價
+    DISCOUNT      INT NOT NULL,                    -- 折扣金額
+    STATUS        VARCHAR(20) DEFAULT 'NEW',       -- 狀態（單選框）
+
+    CREATED_AT    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 建立時間
+    UPDATED_AT    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, --更新時間
+
+    PRIMARY KEY (ID)
+);
+
+INSERT INTO ORDER_ITEM
+(ORDER_ID, ITEM_ID, PRODUCT_NAME, QUANTITY, UNIT_PRICE, DISCOUNT, STATUS)
+VALUES
+(10001, 20001, 'P001', 'Q01', 32000, 1000, 'NEW'),
+(10001, 20002, 'P002', 'Q02', 7800, 500, 'NEW'),
+(10001, 20003, 'P003', 'Q03', 36000, 2000, 'CANCEL'),
+
+(10002, 20004, 'P004', 'Q04', 28000, 0, 'NEW'),
+(10002, 20005, 'P005', 'Q05', 4200, 200, 'CANCEL'),
+(10002, 20006, 'P006', 'Q06', 45000, 3000, 'CANCEL'),
+
+(10003, 20007, 'P001', 'Q01', 11000, 800, 'NEW'),
+(10003, 20008, 'P002', 'Q02', 9800, 500, 'CANCEL'),
+
+(10004, 20009, 'P003', 'Q03', 3200, 200, 'NEW'),
+(10004, 20010, 'P004', 'Q04', 2500, 100, 'CANCEL');
+
+
+
+
+
+
+
+
+CREATE TABLE ORDER_ITEM_CODE (
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,      -- 主鍵
+    TYPE VARCHAR(30) NOT NULL,                 -- 類型：category / brand / status
+    CODE VARCHAR(30) NOT NULL,                 -- 代碼
+    CONTENT VARCHAR(50) NOT NULL               -- 顯示內容
+);
+
+
+INSERT INTO ORDER_ITEM_CODE (TYPE, CODE, CONTENT) VALUES
+-- 商品狀態 STATUS
+('STATUS',   'NEW',   '上架中'),
+('STATUS',   'CANCEL',  '下架'),
+
+
+-- 商品分類 QUANTITY
+('QUANTITY', 'Q01',     '1'),
+('QUANTITY', 'Q02',     '2'),
+('QUANTITY', 'Q03',     '3'),
+('QUANTITY', 'Q04',     '4'),
+('QUANTITY', 'Q05',     '5'),
+('QUANTITY', 'Q06',     '6'),
+
+-- 商品品牌 PRODUCT_NAME
+('PRODUCT_NAME', 'P001', '蘋果 iPhone 15'),
+('PRODUCT_NAME', 'P002', 'AirPods Pro 無線耳機'),
+('PRODUCT_NAME', 'P003', 'MacBook Air M2 筆電'),
+('PRODUCT_NAME', 'P004', '三星 Galaxy S24'),
+('PRODUCT_NAME', 'P005', 'Galaxy Buds2 藍牙耳機'),
+('PRODUCT_NAME', 'P006', 'Dell XPS 13 輕薄筆電');
