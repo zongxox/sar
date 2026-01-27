@@ -443,18 +443,9 @@ public class User0127Repository {
             ps.setString(6, dao.getAddress());
             ps.setString(7, dao.getZipcodes());
             ps.setString(8, dao.getCreUser());
-            if (dao.getCreDate() == null) {
-                ps.setNull(9, java.sql.Types.TIMESTAMP);
-            } else {
-                ps.setTimestamp(9, Timestamp.valueOf(dao.getCreDate()));
-            }
-
+            ps.setTimestamp(9,Timestamp.valueOf(dao.getCreDate()));
             ps.setString(10, dao.getUpdUser());
-            if (dao.getUpdDate() == null) {
-                ps.setNull(11, java.sql.Types.TIMESTAMP);
-            } else {
-                ps.setTimestamp(11, Timestamp.valueOf(dao.getUpdDate()));
-            }
+            ps.setTimestamp(11,Timestamp.valueOf(dao.getUpdDate()));
             // 6) 執行新增
             return ps.executeUpdate();
         }
