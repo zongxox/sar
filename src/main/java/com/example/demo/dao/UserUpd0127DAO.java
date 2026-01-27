@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,16 +9,16 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@NoArgsConstructor
+public class UserUpd0127DAO {
     private Integer id;
     private String name;
     private String account;
     private String password;
     private String phone;
     private String email;
-    private String zipcode;
+    private String zipcodes;
     private String address;
     private String creUser;
     private LocalDateTime creDate;

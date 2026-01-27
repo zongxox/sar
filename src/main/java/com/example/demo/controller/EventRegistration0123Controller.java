@@ -77,11 +77,7 @@ public class EventRegistration0123Controller {
 
     //上傳
     @PostMapping("/upload/{memberId}")
-    public ResponseEntity<String> upload(
-            @PathVariable Long memberId,
-            @RequestParam("file") MultipartFile file
-    ) {
-        System.out.println("upload called memberId=" + memberId);
+    public ResponseEntity<String> upload(@PathVariable Long memberId, @RequestParam("file") MultipartFile file) {
         eventRegistration0123Service.upload(memberId, file);
         return ResponseEntity.ok("上傳成功");
     }

@@ -9,7 +9,9 @@ import com.example.demo.res.OrderItemInit0126Res;
 import com.example.demo.servicec.OrderItem0126Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -58,4 +60,20 @@ public class OrderItem0126Controller {
     public int insert(@RequestBody OrderItemUpd0126Req req){
         return orderItem0126Service.update(req);
     }
+
+    //上傳
+    @PostMapping("/importExcel")
+    public String importExcel(@RequestParam("file") MultipartFile file) throws Exception {
+        orderItem0126Service.importOrderItemExcel(file);
+        return "匯入成功";
+    }
+
+
+    //下載
+    @GetMapping("/downloadTemplate")
+    public void downloadExcel(HttpServletResponse response) throws Exception {
+        orderItem0126Service.downloadExcel(response);
+    }
+
+
 }

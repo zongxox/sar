@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,19 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private Integer id;
+@NoArgsConstructor
+public class UserInd0127Req {
     private String name;
     private String account;
     private String password;
     private String phone;
     private String email;
-    private String zipcode;
+    private List<String> zipcodes;
     private String address;
     private String creUser;
     private LocalDateTime creDate;

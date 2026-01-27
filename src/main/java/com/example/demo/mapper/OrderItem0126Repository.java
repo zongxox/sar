@@ -405,32 +405,63 @@ public class OrderItem0126Repository {
 
 
     // poi上傳
-    public int insert1(
-            Long orderId,
-            Long itemId,
-            String productName,
-            String quantity,
-            Integer unitPrice,
-            Integer discount,
-            String status
-    ) throws Exception {
+    public int insert1(OrderItemUpd0126DAO dao) throws Exception {
 
-        String sql = "INSERT INTO order_item(order_id, item_id, product_name, quantity, unit_price, discount, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ORDER_ITEM " +
+                "(ORDER_ID, ITEM_ID, PRODUCT_NAME, QUANTITY, UNIT_PRICE, DISCOUNT, STATUS, CREATED_AT, UPDATED_AT) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setLong(1, orderId);
-            ps.setLong(2, itemId);
-            ps.setString(3, productName);
-            ps.setString(4, quantity);
-            ps.setInt(5, unitPrice);
-            ps.setInt(6, discount);
-            ps.setString(7, status);
+            ps.setLong(1, dao.getOrderId());
+            ps.setLong(2, dao.getItemId());
+            ps.setString(3, dao.getProductName());
+            ps.setString(4, dao.getQuantity());
+            ps.setInt(5, dao.getUnitPrice());
+            ps.setInt(6, dao.getDiscount());
+            ps.setString(7, dao.getStatus());
+            ps.setTimestamp(8, Timestamp.valueOf(dao.getCreatedAt()));
+            ps.setTimestamp(9, Timestamp.valueOf(dao.getUpdatedAt()));
 
             return ps.executeUpdate();
         }
+    }
+
+
+    //下載
+    public List<OrderItemUpd0126DAO> findAll() throws Exception {
+
+        String sql = "SELECT ID, ORDER_ID, ITEM_ID, PRODUCT_NAME, QUANTITY, UNIT_PRICE, DISCOUNT, STATUS, CREATED_AT, UPDATED_AT " +
+                "FROM ORDER_ITEM ORDER BY ID";
+
+        List<OrderItemUpd0126DAO> list = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                OrderItemUpd0126DAO dao = OrderItemUpd0126DAO.builder()
+                        .id(rs.getLong("ID"))
+                        .orderId(rs.getLong("ORDER_ID"))
+                        .itemId(rs.getLong("ITEM_ID"))
+                        .productName(rs.getString("PRODUCT_NAME"))
+                        .quantity(rs.getString("QUANTITY"))
+                        .unitPrice(rs.getInt("UNIT_PRICE"))
+                        .discount(rs.getInt("DISCOUNT"))
+                        .status(rs.getString("STATUS"))
+                        .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
+                        .updatedAt(rs.getTimestamp("UPDATED_AT").toLocalDateTime())
+                        .build();
+
+                list.add(dao);
+            }
+        }
+
+        return list;
     }
 }
 
