@@ -368,3 +368,39 @@ INSERT INTO ORDER_ITEM_CODE (TYPE, CODE, CONTENT) VALUES
 ('PRODUCT_NAME', 'P004', '三星 Galaxy S24'),
 ('PRODUCT_NAME', 'P005', 'Galaxy Buds2 藍牙耳機'),
 ('PRODUCT_NAME', 'P006', 'Dell XPS 13 輕薄筆電');
+
+
+##################
+CREATE TABLE RECORDS (
+    ID INT AUTO_INCREMENT PRIMARY KEY,       -- 主鍵 ID
+    USER_ID INT NOT NULL,                     -- 使用者 ID
+    TITLE VARCHAR(100),                       -- 標題
+    DESCRIPTION TEXT,                         -- 詳細說明
+    START_TIME DATETIME NOT NULL,             -- 開始時間
+    END_TIME DATETIME NOT NULL,               -- 結束時間
+    STATUS VARCHAR(100),                 -- 狀態（1=啟用，0=停用）
+    LOCATION VARCHAR(100),                    -- 地點
+    CREATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP, -- 建立時間
+    UPDATED_AT DATETIME DEFAULT CURRENT_TIMESTAMP  -- 更新時間
+);
+
+
+INSERT INTO records (
+    user_id,       -- 使用者 ID
+    title,         -- 標題
+    description,   -- 詳細說明
+    start_time,    -- 開始時間
+    end_time,      -- 結束時間
+    status,        -- 狀態
+    location       -- 地點
+) VALUES
+(1, '晨會', '每日例行會議', '2026-01-28 09:00:00', '2026-01-28 09:30:00', 1, '會議室 A'),
+(2, '專案討論', '新功能需求討論', '2026-01-28 10:00:00', '2026-01-28 11:30:00', 1, '會議室 B'),
+(3, '教育訓練', 'SQL 基礎教學', '2026-01-28 13:00:00', '2026-01-28 15:00:00', 1, '會議室 A'),
+(4, '客戶會議', '系統展示與說明', '2026-01-28 15:30:00', '2026-01-28 16:30:00', 1, '會議室 A'),
+(5, '內部討論', 'UI/UX 優化', '2026-01-28 16:30:00', '2026-01-28 17:30:00', 1, '會議室 C'),
+(6, '加班處理', '修復緊急 Bug', '2026-01-28 18:00:00', '2026-01-28 20:00:00', 1, '會議室 B'),
+(7, '系統維護', '資料庫備份', '2026-01-29 01:00:00', '2026-01-29 02:00:00', 1, '會議室 B'),
+(8, '行銷會議', '活動規劃討論', '2026-01-29 10:00:00', '2026-01-29 11:00:00', 0, '會議室 C'),
+(9, '面試', '後端工程師面試', '2026-01-29 14:00:00', '2026-01-29 15:00:00', 0, '會議室 B'),
+(10, '結案會議', '專案成果總結', '2026-01-29 16:00:00', '2026-01-29 17:00:00', 0, '會議室 A');

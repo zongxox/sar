@@ -245,6 +245,32 @@ public class User0127Service {
         return true;
     }
 
+    //下載
+    public List<UserQuery0127Res> downloadList(UserQuery0127Req req) {
+
+        //2.呼叫 MyBatis / Mapper，依照 param 條件查詢資料庫
+        List<UserQuery0127DAO> list = user0127Repository.query(req);
+
+        //3.將查詢結果 DTO 轉成回傳用的 Response 物件 AdRes
+        List<UserQuery0127Res> rows = new ArrayList<>();
+
+        //逐筆處理查詢出來的資料
+        for (UserQuery0127DAO s : list) {
+
+            //建立一筆回傳用的 AdRes 物件
+            UserQuery0127Res r = new UserQuery0127Res();
+
+            //將 DTO 中同名欄位的資料複製到 AdRes
+            BeanUtils.copyProperties(s, r);
+
+            //將轉換完成的物件加入回傳清單
+            rows.add(r);
+        }
+
+        //4.回傳整理完成的資料清單（供 Excel 匯出使用）
+        return rows;
+    }
+
 }
 
 

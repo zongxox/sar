@@ -649,6 +649,107 @@ public class EventRegistration0123Repository {
         }
     }
 
+
+    /*查詢按鈕*/
+    public List<ErTest123DAO> testQuery() {
+        List<MemberDetail0123DAO> allDetails = testQuery1();
+
+
+        String sql = "SELECT member_id, event_code, register_time,event_name, status_code, phone, email, note, option_codes, cancel_time,update_time FROM event_registration";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<ErTest123DAO> list = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();//連線數據庫
+            ps = conn.prepareStatement(sql);//把sql準備好之後,讓她變成一個物件
+
+            rs = ps.executeQuery();//查詢出的結果
+            while (rs.next()) {//將每一筆結果放到 dao
+                ErTest123DAO dao = new ErTest123DAO();
+                dao.setMemberId(rs.getLong(1));
+                dao.setEventCode(rs.getString(2));
+                dao.setRegisterTime(rs.getString(3));
+                dao.setEventName(rs.getString(4));
+                dao.setStatusCode(rs.getString(5));
+                dao.setPhone(rs.getString(6));
+                dao.setEmail(rs.getString(7));
+                dao.setNote(rs.getString(8));
+                dao.setOptionCodes(rs.getString(9));
+                dao.setCancelTime(rs.getTimestamp(10));
+                dao.setUpdateTime(rs.getTimestamp(11));
+                list.add(dao);//把每一筆的res 循環結果放到list
+
+                List<MemberDetail0123DAO> details = new ArrayList<>();
+                for (MemberDetail0123DAO d : allDetails) {
+                    if (d.getMemberId().equals(dao.getMemberId())) {
+                        details.add(d);
+                    }
+                }
+
+                dao.setMemberDetail(details);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage(), e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    private List<MemberDetail0123DAO> testQuery1() {
+
+        String sql = "SELECT member_id, name, gender, phone, id_number, " +
+                "birth_date, address, hobby " +
+                "FROM member_detail";
+
+        List<MemberDetail0123DAO> list = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                MemberDetail0123DAO d = new MemberDetail0123DAO();
+                d.setMemberId(rs.getLong(1));
+                d.setName(rs.getString(2));
+                d.setGender(rs.getString(3));
+                d.setPhone(rs.getString(4));
+                d.setIdNumber(rs.getString(5));
+                d.setBirthDate(rs.getDate(6));
+                d.setAddress(rs.getString(7));
+                d.setHobby(rs.getString(8));
+                list.add(d);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("查詢 member_detail 失敗", e);
+        }
+
+        return list;
+    }
+
+
+
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.CorsConfig.ExcelExportUtil;
 import com.example.demo.req.UserDel0127Req;
 import com.example.demo.req.UserInd0127Req;
 import com.example.demo.req.UserQuery0127Req;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -65,6 +69,43 @@ public class User0127Controller {
         user0127Service.importExcel(file);
         return "匯入成功";
     }
+
+
+    //下載
+    @PostMapping("/downloadExcel")
+    public void downloadExcel(
+            @RequestBody UserQuery0127Req req,
+            @RequestParam(defaultValue = "xlsx") String excelType,
+            HttpServletResponse response
+    ) throws Exception {
+
+        List<UserQuery0127Res> rows = user0127Service.downloadList(req);
+
+        boolean isXls = "xls".equalsIgnoreCase(excelType);
+
+        byte[] bytes = ExcelExportUtil.buildApplyDetailExcel(rows, isXls);
+
+        String fileName = UUID.randomUUID().toString();
+
+        if (isXls) {
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition",
+                    "attachment; filename=\"" + fileName + ".xls\"");
+        } else {
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition",
+                    "attachment; filename=\"" + fileName + ".xlsx\"");
+        }
+
+        response.setContentLength(bytes.length);
+
+        try (ServletOutputStream out = response.getOutputStream()) {
+            out.write(bytes);
+            out.flush();
+        }
+    }
+
+
 
 }
 
