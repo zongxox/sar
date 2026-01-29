@@ -79,20 +79,25 @@ public class User0127Controller {
             HttpServletResponse response
     ) throws Exception {
 
+        //拿到結果
         List<UserQuery0127Res> rows = user0127Service.downloadList(req);
 
+        //判斷使用者要下載的是不是xls
         boolean isXls = "xls".equalsIgnoreCase(excelType);
 
+        //把「資料（rows）」轉成「Excel 檔案內容」，並用 byte[] 的形式回傳
         byte[] bytes = ExcelExportUtil.buildApplyDetailExcel(rows, isXls);
 
+        //起一個隨機檔名
         String fileName = UUID.randomUUID().toString();
 
         if (isXls) {
-            response.setContentType("application/vnd.ms-excel");
+            response.setContentType("application/vnd.ms-excel");//告訴瀏覽器這是xls
+            //告訴瀏覽器,不要直接顯示，請『下載』這個檔案，檔名叫 xxx.xls
             response.setHeader("Content-Disposition",
                     "attachment; filename=\"" + fileName + ".xls\"");
         } else {
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");//告訴瀏覽器這是xlsx
             response.setHeader("Content-Disposition",
                     "attachment; filename=\"" + fileName + ".xlsx\"");
         }
