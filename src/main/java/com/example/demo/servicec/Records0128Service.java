@@ -31,17 +31,16 @@ public class Records0128Service {
     private Records0128Repository records0128Repository;
 
 
-
     //頁面初始化查詢
-    public List<RecordsInt0128Res> init(){
+    public List<RecordsInt0128Res> init() {
         List<RecordsInt0128DAO> init = records0128Repository.init();
         List<RecordsInt0128Res> res = new ArrayList<>();
-        for (RecordsInt0128DAO s: init){
+        for (RecordsInt0128DAO s : init) {
             RecordsInt0128Res recordsInt0128Res = new RecordsInt0128Res();
-            BeanUtils.copyProperties(s,recordsInt0128Res);
-            if("1".equals(recordsInt0128Res.getStatus())){
+            BeanUtils.copyProperties(s, recordsInt0128Res);
+            if ("1".equals(recordsInt0128Res.getStatus())) {
                 recordsInt0128Res.setStatusName("啟用");
-            }else if("0".equals(recordsInt0128Res.getStatus())){
+            } else if ("0".equals(recordsInt0128Res.getStatus())) {
                 recordsInt0128Res.setStatusName("停用");
             }
             res.add(recordsInt0128Res);
@@ -50,31 +49,31 @@ public class Records0128Service {
     }
 
     //查詢按鈕
-    public List<RecordsQuery0128Res> query(RecordsQuery0128Req req){
+    public List<RecordsQuery0128Res> query(RecordsQuery0128Req req) {
         List<RecordsQuery0128DAO> dao = records0128Repository.query(req);
         List<RecordsQuery0128Res> res = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("yyyy/MMdd HH:mm:ss");
-        for (RecordsQuery0128DAO s : dao ){
+        DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        for (RecordsQuery0128DAO s : dao) {
             RecordsQuery0128Res recordsQuery0128Res = new RecordsQuery0128Res();
-            BeanUtils.copyProperties(s,recordsQuery0128Res);
-            if(recordsQuery0128Res.getStartTime() != null){
+            BeanUtils.copyProperties(s, recordsQuery0128Res);
+            if (recordsQuery0128Res.getStartTime() != null) {
                 recordsQuery0128Res.setStartTimeStr(recordsQuery0128Res.getStartTime().format(formatter));
             }
-            if(recordsQuery0128Res.getEndTime() != null){
+            if (recordsQuery0128Res.getEndTime() != null) {
                 recordsQuery0128Res.setEndTimeStr(recordsQuery0128Res.getEndTime().format(formatter2));
             }
-            if(recordsQuery0128Res.getCreatedAt() != null){
+            if (recordsQuery0128Res.getCreatedAt() != null) {
                 recordsQuery0128Res.setCreatedAtStr(recordsQuery0128Res.getCreatedAt().format(formatter3));
             }
-            if(recordsQuery0128Res.getUpdatedAt() != null){
+            if (recordsQuery0128Res.getUpdatedAt() != null) {
                 recordsQuery0128Res.setUpdatedAtStr(recordsQuery0128Res.getUpdatedAt().format(formatter4));
             }
-            if("1".equals(recordsQuery0128Res.getStatus())){
+            if ("1".equals(recordsQuery0128Res.getStatus())) {
                 recordsQuery0128Res.setStatusName("啟用");
-            }else if("0".equals(recordsQuery0128Res.getStatus())){
+            } else if ("0".equals(recordsQuery0128Res.getStatus())) {
                 recordsQuery0128Res.setStatusName("停用");
             }
             res.add(recordsQuery0128Res);
@@ -83,10 +82,9 @@ public class Records0128Service {
     }
 
 
-
     //修改
-    public int update(RecordsUpd0128Req req){
-        RecordsUpd0128DAO dao =RecordsUpd0128DAO.builder()
+    public int update(RecordsUpd0128Req req) {
+        RecordsUpd0128DAO dao = RecordsUpd0128DAO.builder()
                 .id(req.getId())
                 .userId(Integer.valueOf(req.getUserId()))
                 .title(req.getTitle())
@@ -101,8 +99,6 @@ public class Records0128Service {
         int rows = records0128Repository.update(dao);
         return rows;
     }
-
-
 
 
     //讀取上傳檔案
@@ -127,19 +123,19 @@ public class Records0128Service {
             // 如果你 Excel 第0列是表頭，就從第1列開始讀
             int startRow = 1;
 
-
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
             for (int r = startRow; r <= sheet.getLastRowNum(); r++) {
                 Row row = sheet.getRow(r);
                 if (row == null) continue;
                 if (isRowEmpty(row, fmt)) continue;
 
-                String userId     = getCell(row, 0, fmt);
+                String userId = getCell(row, 0, fmt);
                 String title = getCell(row, 1, fmt);
-                String description  = getCell(row, 2, fmt);
-                LocalDateTime startTime    = getExcelDateTime(row, 3);
-                LocalDateTime endTime    = getExcelDateTime(row, 4);
-                String status  = getCell(row, 5, fmt);
+                String description = getCell(row, 2, fmt);
+                LocalDateTime startTime = getExcelDateTime(row, 3);
+                LocalDateTime endTime = getExcelDateTime(row, 4);
+                String status = getCell(row, 5, fmt);
                 String location = getCell(row, 6, fmt);
                 LocalDateTime createdAt = getExcelDateTime(row, 7);
                 LocalDateTime updatedAt = getExcelDateTime(row, 8);
@@ -155,7 +151,11 @@ public class Records0128Service {
                 dao.setCreatedAt(createdAt);
                 dao.setUpdatedAt(updatedAt);
                 RecordsUp0128Res recordsUp0128Res = new RecordsUp0128Res();
-                BeanUtils.copyProperties(dao,recordsUp0128Res);
+                BeanUtils.copyProperties(dao, recordsUp0128Res);
+                recordsUp0128Res.setStartTime(startTime.format(formatter));
+                recordsUp0128Res.setEndTime(endTime.format(formatter));
+                recordsUp0128Res.setCreatedAt(createdAt.format(formatter));
+                recordsUp0128Res.setUpdatedAt(updatedAt.format(formatter));
                 res.add(recordsUp0128Res);
             }
 
@@ -284,7 +284,8 @@ public class Records0128Service {
             try {
                 // 有些 pattern 是只有日期，這裡會 parse 失敗是正常的（會被 catch 掉）
                 return LocalDateTime.parse(s, f);
-            } catch (DateTimeParseException ignore) {}
+            } catch (DateTimeParseException ignore) {
+            }
         }
 
         throw new RuntimeException("日期格式錯誤：" + s);
@@ -316,38 +317,42 @@ public class Records0128Service {
         int rows = 0;
         List<Records> daoList = new ArrayList<>();
 
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
         for (RecordsUp0128Req s : req) {
             Records dao = Records.builder()
-                        .userId(Integer.valueOf(s.getUserId()))
-                        .title(s.getTitle())
-                        .description(s.getDescription())
-                        .startTime(LocalDateTime.parse(s.getStartTime()))
-                        .endTime(LocalDateTime.parse(s.getEndTime()))
-                        .status(s.getStatus())
-                        .location(s.getLocation())
-                        .createdAt(LocalDateTime.parse(s.getCreatedAt()))
-                        .updatedAt(LocalDateTime.parse(s.getUpdatedAt()))
-                        .build();
-                daoList.add(dao);
-                rows++;
-            }
+                    .userId(Integer.valueOf(s.getUserId()))
+                    .title(s.getTitle())
+                    .description(s.getDescription())
+                    .startTime(LocalDateTime.parse(s.getStartTime(), fmt))
+                    .endTime(LocalDateTime.parse(s.getEndTime(), fmt))
+                    .status(s.getStatus())
+                    .location(s.getLocation())
+                    .createdAt(LocalDateTime.parse(s.getCreatedAt(), fmt))
+                    .updatedAt(LocalDateTime.parse(s.getUpdatedAt(), fmt))
+                    .build();
+            daoList.add(dao);
+            rows++;
+        }
         if (!daoList.isEmpty()) {
             records0128Repository.insert(daoList);
         }
         return rows; // 成功幾筆
     }
 
+
+
     @Autowired
     private EventRegistration0123Repository e;
 
     //查詢
-    public List<ErTest123Res> testQuery(){
+    public List<ErTest123Res> testQuery() {
         List<ErTest123DAO> erTest123DAOS = e.testQuery();
         List<ErTest123Res> res = new ArrayList<>();
 
-        for(ErTest123DAO s : erTest123DAOS){
+        for (ErTest123DAO s : erTest123DAOS) {
             ErTest123Res erTest123Res = new ErTest123Res();
-            BeanUtils.copyProperties(s,erTest123Res);
+            BeanUtils.copyProperties(s, erTest123Res);
             res.add(erTest123Res);
         }
         return res;
