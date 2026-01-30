@@ -4,7 +4,10 @@ import com.example.demo.dao.*;
 import com.example.demo.entity.Article;
 import com.example.demo.mapper.Articles0130Repository;
 import com.example.demo.req.*;
-import com.example.demo.res.*;
+import com.example.demo.res.ArticleDon0130Res;
+import com.example.demo.res.ArticleInit0130Res;
+import com.example.demo.res.ArticleQuery0130Res;
+import com.example.demo.res.ArticleUpdQuery0130Res;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -110,6 +115,8 @@ public class Articles0130Service {
 
     //修改
     public int update(ArticleUpd0130Req req) {
+        LocalDate createdDate = LocalDate.parse(req.getCreatedAt());  // "2026-01-30"
+        LocalTime updatedTime = LocalTime.parse(req.getUpdatedAt());  // "17:21"
         ArticleUpd0130DAO dao = ArticleUpd0130DAO.builder()
                 .id(Integer.valueOf(req.getId()))
                 .title(req.getTitle())
@@ -119,8 +126,8 @@ public class Articles0130Service {
                 .category(req.getCategory())
                 .status(req.getStatus())
                 .views(Integer.valueOf(req.getViews()))
-                .createdAt(LocalDateTime.parse(req.getCreatedAt()))
-                .updatedAt(LocalDateTime.parse(req.getUpdatedAt()))
+                .createdAt(createdDate.atStartOfDay())
+                .updatedAt(createdDate.atTime(updatedTime))
                 .build();
         int rows = f.update(dao);
         return rows;
