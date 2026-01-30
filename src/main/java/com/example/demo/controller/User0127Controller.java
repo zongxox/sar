@@ -93,7 +93,7 @@ public class User0127Controller {
 
         if (isXls) {
             response.setContentType("application/vnd.ms-excel");//告訴瀏覽器這是xls
-            //告訴瀏覽器,不要直接顯示，請『下載』這個檔案，檔名叫 xxx.xls
+            //告訴瀏覽器,不要直接顯示，請下載這個檔案，檔名叫 xxx.xls
             response.setHeader("Content-Disposition",
                     "attachment; filename=\"" + fileName + ".xls\"");
         } else {

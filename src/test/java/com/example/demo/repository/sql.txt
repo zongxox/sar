@@ -404,3 +404,43 @@ INSERT INTO records (
 (8, '行銷會議', '活動規劃討論', '2026-01-29 10:00:00', '2026-01-29 11:00:00', 0, '會議室 C'),
 (9, '面試', '後端工程師面試', '2026-01-29 14:00:00', '2026-01-29 15:00:00', 0, '會議室 B'),
 (10, '結案會議', '專案成果總結', '2026-01-29 16:00:00', '2026-01-29 17:00:00', 0, '會議室 A');
+
+################################
+CREATE TABLE articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,      -- 文章ID
+    title VARCHAR(150) NOT NULL,             -- 文章標題
+    content TEXT,                            -- 文章內容
+    summary VARCHAR(255),                    -- 文章摘要
+    author VARCHAR(50),                      -- 作者
+    category VARCHAR(50),                    -- 文章分類
+    status VARCHAR(20) DEFAULT 'draft',      -- 文章狀態
+    views INT DEFAULT 0,                     -- 瀏覽次數
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,           -- 建立時間
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP            -- 更新時間
+);
+
+
+INSERT INTO articles
+(title, content, summary, author, category, status, views, created_at, updated_at)
+VALUES
+('SQL 入門教學', 'SQL 基礎語法介紹', 'SQL 新手入門', '小明', '資料庫', 'published', 120, NOW(), NOW()),
+('MySQL 索引解析', '索引原理與效能', '深入了解索引', '小華', '資料庫', 'published', 95, NOW(), NOW()),
+('REST API 設計', 'API 設計原則', 'RESTful 重點', '阿杰', '後端', 'draft', 10, NOW(), NOW()),
+('前端效能優化', '效能優化技巧', '提升載入速度', '小美', '前端', 'published', 230, NOW(), NOW()),
+('Docker 基礎', 'Docker 容器介紹', '快速上手 Docker', '阿偉', 'DevOps', 'published', 180, NOW(), NOW()),
+('Git 常用指令', 'Git 指令整理', '版本控制必學', '小明', '工具', 'published', 300, NOW(), NOW()),
+('Linux 指令大全', 'Linux 常用指令', '工程師必備', '阿強', '作業系統', 'draft', 45, NOW(), NOW()),
+('Python 資料分析', 'Pandas 與 Numpy', '資料分析入門', '小芳', 'Python', 'published', 210, NOW(), NOW()),
+('Java OOP 概念', '物件導向說明', 'OOP 核心', '阿凱', 'Java', 'published', 160, NOW(), NOW()),
+('Spring Boot 教學', '快速建立後端', 'Spring Boot 入門', '小華', 'Java', 'draft', 30, NOW(), NOW()),
+
+('Vue 基礎語法', 'Vue 核心語法', '前端框架入門', '小美', '前端', 'published', 275, NOW(), NOW()),
+('React Hook', 'Hook 使用方式', 'React 新寫法', '阿杰', '前端', 'published', 190, NOW(), NOW()),
+('TypeScript 教學', '型別系統介紹', 'TS 基礎', '小明', '前端', 'draft', 20, NOW(), NOW()),
+('Node.js 架構', '事件迴圈解析', 'Node 原理', '阿偉', '後端', 'published', 155, NOW(), NOW()),
+('MongoDB 入門', 'NoSQL 概念', 'MongoDB 基礎', '小芳', '資料庫', 'published', 140, NOW(), NOW()),
+('Redis 快取', 'Redis 使用場景', '快取提升效能', '阿強', '資料庫', 'published', 220, NOW(), NOW()),
+('系統設計概念', '高併發設計', '系統設計入門', '阿凱', '架構', 'draft', 60, NOW(), NOW()),
+('微服務架構', '微服務拆分', '服務化設計', '小華', '架構', 'published', 175, NOW(), NOW()),
+('CI/CD 流程', '自動化部署', 'DevOps 核心', '阿偉', 'DevOps', 'published', 130, NOW(), NOW()),
+('資安基礎', '常見攻擊手法', '資安入門知識', '小美', '資安', 'draft', 15, NOW(), NOW());
