@@ -1,4 +1,4 @@
-package com.example.demo.servicec;
+package com.example.demo.service;
 
 import com.example.demo.dao.FruitInit0120DAO;
 import com.example.demo.dao.FruitQuery0120DAO;

@@ -444,3 +444,42 @@ VALUES
 ('微服務架構', '微服務拆分', '服務化設計', '小華', '架構', 'published', 175, NOW(), NOW()),
 ('CI/CD 流程', '自動化部署', 'DevOps 核心', '阿偉', 'DevOps', 'published', 130, NOW(), NOW()),
 ('資安基礎', '常見攻擊手法', '資安入門知識', '小美', '資安', 'draft', 15, NOW(), NOW());
+
+
+
+
+########################
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+
+########################
+CREATE TABLE COURSE (
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,   -- 課程ID
+    TITLE VARCHAR(100) NOT NULL,             -- 課程名稱
+    TEACHER_NAME VARCHAR(50) NOT NULL,       -- 授課老師姓名
+    DESCRIPTION VARCHAR(255),                -- 課程簡介
+    PRICE DECIMAL(8,2) NOT NULL,             -- 課程價格
+    LEVEL VARCHAR(20),                       -- 課程等級（初級 / 中級 / 進階） 多選
+    MAX_STUDENTS INT,                        -- 課程最多可報名人數      下拉式
+    IS_PUBLISHED  VARCHAR(20),      -- 是否已上架  (上架/下架)  單選
+    CREATED_AT DATETIME NOT NULL,            -- 建立時間
+    UPDATED_AT DATETIME NOT NULL             -- 最後更新時間
+);
+
+INSERT INTO COURSE
+(ID, TITLE, TEACHER_NAME, DESCRIPTION, PRICE, LEVEL, MAX_STUDENTS, IS_PUBLISHED, CREATED_AT, UPDATED_AT)
+VALUES
+(1, '前端基礎入門', '王小明', '學習HTML、CSS與基礎JavaScript', 3200.00, '初級', 30, TRUE,  '2025-01-05 10:00:00', '2025-01-05 10:00:00'),
+(2, 'Java程式設計實戰', '陳志豪', 'Java物件導向與實務開發', 4500.00, '初級,中級', 35, TRUE,  '2025-01-10 09:30:00', '2025-01-12 14:20:00'),
+(3, 'Python資料分析', '林雅婷', '使用Python進行資料分析與視覺化', 5200.00, '中級', 25, TRUE,  '2025-01-15 11:00:00', '2025-01-18 16:00:00'),
+(4, '後端API設計', '黃建宏', 'RESTful API與系統設計實務', 4800.00, '中級,進階', 28, FALSE, '2025-01-20 10:30:00', '2025-01-20 10:30:00'),
+(5, '資料庫設計入門', '張美玲', '關聯式資料庫與正規化設計', 3000.00, '初級', 40, TRUE,  '2025-01-22 09:00:00', '2025-01-22 09:00:00'),
+(6, 'Spring Boot開發實務', '周柏翰', '使用Spring Boot建立企業系統', 5600.00, '中級,進階', 32, TRUE,  '2025-01-25 13:00:00', '2025-01-27 15:10:00'),
+(7, '雲端部署與維運', '李俊傑', 'Docker與雲端平台部署實務', 6000.00, '進階', 20, FALSE, '2025-01-28 10:00:00', '2025-01-28 10:00:00'),
+(8, 'UI/UX設計基礎', '蔡佩珊', '介面設計與使用者體驗概念', 2800.00, '初級', 45, TRUE,  '2025-02-01 09:30:00', '2025-02-01 09:30:00'),
+(9, '資安概論與實務', '鄭凱文', '企業資訊安全與防護策略', 5000.00, '中級', 26, TRUE,  '2025-02-05 10:15:00', '2025-02-06 17:00:00'),
+(10,'全端開發專題實作', '許書豪', '前後端整合專案實戰課程', 7200.00, '中級,進階', 18, FALSE, '2025-02-08 14:00:00', '2025-02-08 14:00:00');

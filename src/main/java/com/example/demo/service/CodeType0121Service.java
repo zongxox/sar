@@ -1,4 +1,4 @@
-package com.example.demo.servicec;
+package com.example.demo.service;
 
 import com.example.demo.dao.CodeType0121DAO;
 import com.example.demo.mapper.CodeType0121Repository;

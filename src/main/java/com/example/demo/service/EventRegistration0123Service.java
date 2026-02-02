@@ -1,4 +1,4 @@
-package com.example.demo.servicec;
+package com.example.demo.service;
 
 import com.example.demo.dao.*;
 import com.example.demo.mapper.EventRegistration0123Repository;

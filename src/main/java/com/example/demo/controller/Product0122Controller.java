@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.req.*;
 import com.example.demo.res.*;
-import com.example.demo.servicec.Product0122Service;
+import com.example.demo.service.Product0122Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

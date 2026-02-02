@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.res.CodeType0121Res;
-import com.example.demo.servicec.CodeType0121Service;
+import com.example.demo.service.CodeType0121Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

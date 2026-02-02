@@ -4,7 +4,7 @@ import com.example.demo.req.*;
 import com.example.demo.res.FruitInit0129Res;
 import com.example.demo.res.FruitQuery0129Res;
 import com.example.demo.res.FruitUpdQuery0129Res;
-import com.example.demo.servicec.FruitJpa0129Service;
+import com.example.demo.service.FruitJpa0129Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

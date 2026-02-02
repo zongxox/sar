@@ -4,7 +4,7 @@ import com.example.demo.req.*;
 import com.example.demo.res.FruitInit0120Res;
 import com.example.demo.res.FruitQuery0120Res;
 import com.example.demo.res.FruitUpdQuery0120Res;
-import com.example.demo.servicec.Fruit0120Service;
+import com.example.demo.service.Fruit0120Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;

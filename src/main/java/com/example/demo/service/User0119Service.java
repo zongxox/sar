@@ -1,9 +1,9 @@
-package com.example.demo.servicec;
+package com.example.demo.service;
 
 import com.example.demo.dao.UserInit0119DAO;
 import com.example.demo.dao.UserQuery0119DAO;
 import com.example.demo.dao.UserUpdQuery0119DAO;
-import com.example.demo.mapper.UserRepository;
+import com.example.demo.mapper.User0119Repository;
 import com.example.demo.req.UserDel0119Req;
 import com.example.demo.req.UserIns0119Req;
 import com.example.demo.req.UserQuery0119Req;
@@ -22,11 +22,8 @@ import java.util.List;
 @Service
 public class User0119Service {
     @Autowired
-    private UserRepository userRepository;
+    private User0119Repository userRepository;
 
-    public User0119Service(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     //頁面初始化查詢
     public List<UserInit0119Res> initSelect() {

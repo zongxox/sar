@@ -8,7 +8,7 @@ import com.example.demo.req.UserUpd0127Req;
 import com.example.demo.res.UserInit0127Res;
 import com.example.demo.res.UserQuery0127Res;
 import com.example.demo.res.UserUpdQuery0127Res;
-import com.example.demo.servicec.User0127Service;
+import com.example.demo.service.User0127Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

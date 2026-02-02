@@ -1,4 +1,4 @@
-package com.example.demo.servicec;
+package com.example.demo.service;
 
 import com.example.demo.dao.PostQuery0121DAO;
 import com.example.demo.dao.PostUpdQuery0121DAO;

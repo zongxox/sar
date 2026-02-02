@@ -7,7 +7,7 @@ import com.example.demo.res.ErTest123Res;
 import com.example.demo.res.RecordsInt0128Res;
 import com.example.demo.res.RecordsQuery0128Res;
 import com.example.demo.res.RecordsUp0128Res;
-import com.example.demo.servicec.Records0128Service;
+import com.example.demo.service.Records0128Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

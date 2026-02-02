@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.req.*;
 import com.example.demo.res.*;
-import com.example.demo.servicec.EventRegistration0123Service;
+import com.example.demo.service.EventRegistration0123Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;

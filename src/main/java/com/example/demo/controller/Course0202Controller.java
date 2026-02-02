@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.CorsConfig.ExcelExportUtil0130;
-import com.example.demo.req.*;
-import com.example.demo.res.ArticleDon0130Res;
-import com.example.demo.res.ArticleInit0130Res;
-import com.example.demo.res.ArticleQuery0130Res;
-import com.example.demo.res.ArticleUpdQuery0130Res;
-import com.example.demo.service.Articles0130Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.CorsConfig.ExcelExportUtil0202;
+import com.example.demo.req.CourseDel0202Req;
+import com.example.demo.req.CourseIns0202Req;
+import com.example.demo.req.CourseQuery0202Req;
+import com.example.demo.req.CourseUpd0202Req;
+import com.example.demo.res.CourseDon0202Res;
+import com.example.demo.res.CourseInit0202Res;
+import com.example.demo.res.CourseQuery0202Res;
+import com.example.demo.service.Course0202Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,59 +20,53 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/Articles/0130")
-public class Articles0130Controller {
-    @Autowired
-    private Articles0130Service articles0130Service;
+@RequestMapping("/Course/0202")
+@RequiredArgsConstructor
+public class Course0202Controller {
+
+    private final Course0202Service course0202Service;
 
     //頁面初始化
-    @GetMapping("init")
-    public List<ArticleInit0130Res> init(){
-        return articles0130Service.init();
+    @GetMapping("/init")
+    public List<CourseInit0202Res> init(){
+        return course0202Service.init();
     }
 
     //查詢案衂
     @PostMapping("/query")
-    public List<ArticleQuery0130Res> query(@RequestBody ArticleQuery0130Req req){
-        return articles0130Service.query(req);
+    public List<CourseQuery0202Res> query(@RequestBody CourseQuery0202Req req){
+        return course0202Service.query(req);
     }
 
 
     //刪除
     @GetMapping("/delete/{id}")
     public int del(@PathVariable String id){
-        ArticleDel0130Req req = new ArticleDel0130Req();
+        CourseDel0202Req req = new CourseDel0202Req();
         req.setId(id);
-        int rows = articles0130Service.del(req);
+        int rows = course0202Service.del(req);
         return rows;
     }
 
     //新增
     @PostMapping("/insert")
-    public int insert(@RequestBody ArticleIns0130Req req){
-        int rows = articles0130Service.insert(req);
+    public int insert(@RequestBody CourseIns0202Req req){
+        int rows = course0202Service.insert(req);
         return rows;
     }
 
-    //跳轉修改畫面查詢
-    @GetMapping("/updQuery/{id}")
-    public ArticleUpdQuery0130Res updaQuery(@PathVariable String id){
-        ArticleUpdQuery0130Req req = new ArticleUpdQuery0130Req();
-        req.setId(id);
-        return articles0130Service.updQuery(req);
-    }
 
     //修改
     @PostMapping("/update")
-    public int update(@RequestBody ArticleUpd0130Req req){
-        return articles0130Service.update(req);
+    public int update(@RequestBody CourseUpd0202Req req){
+        return course0202Service.update(req);
     }
 
 
     //上傳檔案
     @PostMapping("/importExcel")
     public String importExcel(@RequestParam("file") MultipartFile file) throws Exception {
-        articles0130Service.importExcel(file);
+        course0202Service.importExcel(file);
         return "匯入成功";
     }
 
@@ -78,19 +74,19 @@ public class Articles0130Controller {
     //下載
     @PostMapping("/downloadExcel")
     public void downloadExcel(
-            @RequestBody ArticleQuery0130Req req,
+            @RequestBody CourseQuery0202Req req,
             @RequestParam(defaultValue = "xlsx") String excelType,
             HttpServletResponse response
     ) throws Exception {
 
         //拿到結果
-        List<ArticleDon0130Res> rows = articles0130Service.downloadList(req);
+        List<CourseDon0202Res> rows = course0202Service.downloadList(req);
 
         //判斷使用者要下載的是不是xls
         boolean isXls = "xls".equalsIgnoreCase(excelType);
 
         //把「資料（rows）」轉成「Excel 檔案內容」，並用 byte[] 的形式回傳
-        byte[] bytes = ExcelExportUtil0130.buildApplyDetailExcel(rows, isXls);
+        byte[] bytes = ExcelExportUtil0202.buildApplyDetailExcel(rows, isXls);
 
         //起一個隨機檔名
         String fileName = UUID.randomUUID().toString();
