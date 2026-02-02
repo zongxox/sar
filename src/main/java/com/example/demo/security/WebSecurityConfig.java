@@ -56,14 +56,22 @@ public class WebSecurityConfig {
         http.cors(); // 讓 Angular(4200) 可以跨網域並帶 cookie
 
         http
-                // 設定哪些請求要驗證、哪些不用
                 .authorizeRequests()
 
-                // 註冊與登入網址不需要登入
+// 1) 先放行 OPTIONS（避免預檢被擋）
+                .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+
+// 2) 放行你的 proxy API（建議放行這段就好）
+                .antMatchers(org.springframework.http.HttpMethod.POST, "/Course/0202/smr/a10/a16/query").permitAll()
+// 或者你想放大範圍：
+// .antMatchers("/Course/0202/smr/**").permitAll()
+
+// 原本放行的
                 .antMatchers("/users/0130/register", "/login").permitAll()
 
-                // 其他所有請求都必須已登入
+// 其他照舊要登入
                 .anyRequest().authenticated()
+
                 .and()
 
                 // 例外處理（未登入時怎麼回）
