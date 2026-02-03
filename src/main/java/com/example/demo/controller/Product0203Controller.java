@@ -10,6 +10,8 @@ import com.example.demo.res.ProductInit0203Res;
 import com.example.demo.res.ProductQuery0203Res;
 import com.example.demo.service.Product0203Service;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/Product/0203")
 @RequiredArgsConstructor
-public class product0203Controller {
+public class Product0203Controller {
 
     private final Product0203Service product0203Service;
 
@@ -189,6 +191,20 @@ public class product0203Controller {
                                 })
                 );
     }
+
+@PostMapping(value = "/report/test", produces = MediaType.APPLICATION_PDF_VALUE)
+public ResponseEntity<byte[]> testReport(@RequestBody ProducQuery0203Req req) throws Exception {
+
+    JasperPrint print = product0203Service.testLoadReport(req);
+
+    byte[] pdf = JasperExportManager.exportReportToPdf(print);
+
+    return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=product0203.pdf")
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(pdf);
+}
+
 
 
 

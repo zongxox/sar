@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport
+		name="product0203"
+		language="java"
+		pageWidth="842" pageHeight="595"
+		columnWidth="802"
+		leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+	<queryString><![CDATA[]]></queryString>
+
+	<!-- fields -->
+	<field name="id" class="java.lang.Long"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="category" class="java.lang.String"/>
+	<field name="brand" class="java.lang.String"/>
+	<field name="sku" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="price" class="java.lang.Integer"/>
+	<field name="stock" class="java.lang.Integer"/>
+	<field name="createdTime" class="java.time.LocalDateTime"/>
+	<field name="updatedTime" class="java.time.LocalDateTime"/>
+
+	<title>
+		<band height="28">
+			<staticText>
+				<reportElement x="0" y="0" width="400" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[Hello Jasper 你好]]></text>
+			</staticText>
+		</band>
+	</title>
+
+	<columnHeader>
+		<band height="18">
+
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[id]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="35" y="0" width="110" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[name]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="150" y="0" width="160" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[description]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="315" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[category]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="390" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[brand]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="465" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[sku]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="540" y="0" width="50" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[status]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="595" y="0" width="60" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[price]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="660" y="0" width="40" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[stock]]></text>
+			</staticText>
+
+			<!-- created / updated：兩欄各 45 -->
+			<staticText>
+				<reportElement x="705" y="0" width="45" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[crt]]></text>
+			</staticText>
+
+			<staticText>
+				<reportElement x="755" y="0" width="45" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<text><![CDATA[upd]]></text>
+			</staticText>
+
+		</band>
+	</columnHeader>
+
+	<detail>
+		<band height="18">
+
+			<textField>
+				<reportElement x="0" y="0" width="30" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="35" y="0" width="110" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="150" y="0" width="160" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="315" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="390" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{brand}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="465" y="0" width="70" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{sku}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="540" y="0" width="50" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+
+			<textField pattern="#,##0">
+				<reportElement x="595" y="0" width="60" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="660" y="0" width="40" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[$F{stock}]]></textFieldExpression>
+			</textField>
+
+			<!-- ✅ 日期 + 時間：MM-dd HH:mm（塞得下 45 寬） -->
+			<textField>
+				<reportElement x="705" y="0" width="45" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[
+$F{createdTime} == null ? "" :
+$F{createdTime}.format(java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"))
+                ]]></textFieldExpression>
+			</textField>
+
+			<textField>
+				<reportElement x="755" y="0" width="45" height="18"/>
+				<textElement><font fontName="SansSerif"/></textElement>
+				<textFieldExpression><![CDATA[
+$F{updatedTime} == null ? "" :
+$F{updatedTime}.format(java.time.format.DateTimeFormatter.ofPattern("MM-dd HH:mm"))
+                ]]></textFieldExpression>
+			</textField>
+
+		</band>
+	</detail>
+
+	<pageFooter><band height="0"/></pageFooter>
+	<summary><band height="0"/></summary>
+</jasperReport>

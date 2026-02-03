@@ -11,6 +11,11 @@ import com.example.demo.res.ProductDon0203Res;
 import com.example.demo.res.ProductInit0203Res;
 import com.example.demo.res.ProductQuery0203Res;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -26,10 +31,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -306,4 +308,42 @@ public class Product0203Service {
         //4.回傳整理完成的資料清單（供 Excel 匯出使用）
         return rows;
     }
+
+
+    //讀jrxml檔案,編譯,產生報表物件
+// 讀jrxml檔案,編譯,產生報表物件（帶查詢結果）
+    public JasperPrint testLoadReport(ProducQuery0203Req req) throws Exception {
+
+        // 1) 查詢資料（你已經有 query(req)）
+        List<ProductQuery0203Res> rows = query(req);
+
+        System.out.println("rows size = " + rows.size());
+        if (!rows.isEmpty()) {
+            System.out.println("first row id=" + rows.get(0).getId() + ", name=" + rows.get(0).getName());
+        }
+
+
+        // 2) 讀 jrxml
+        InputStream is = this.getClass().getResourceAsStream("/reports/product0203.jrxml");
+        if (is == null) {
+            throw new RuntimeException("找不到 product0203.jrxml");
+        }
+
+        // 3) 編譯
+        JasperReport report = JasperCompileManager.compileReport(is);
+
+        // 4) 把查詢結果丟進 DataSource
+        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rows);
+
+        // 5) 產生報表
+        Map<String, Object> params = new HashMap<>();
+        JasperPrint print = JasperFillManager.fillReport(report, params, ds);
+
+        return print;
+    }
+
+
+
+
+
 }
