@@ -62,12 +62,19 @@ public class WebSecurityConfig {
                 .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
 // 2) 放行你的 proxy API（建議放行這段就好）
-                .antMatchers(org.springframework.http.HttpMethod.POST, "/Course/0202/smr/a10/a16/query").permitAll()
+                .antMatchers(org.springframework.http.HttpMethod.POST, "/Product/0203/smr").permitAll()
 // 或者你想放大範圍：
 // .antMatchers("/Course/0202/smr/**").permitAll()
 
 // 原本放行的
                 .antMatchers("/users/0130/register", "/login").permitAll()
+                // 放行 Swagger
+                .antMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**"
+                ).permitAll()
 
 // 其他照舊要登入
                 .anyRequest().authenticated()

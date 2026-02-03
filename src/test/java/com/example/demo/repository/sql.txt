@@ -483,3 +483,43 @@ VALUES
 (8, 'UI/UX設計基礎', '蔡佩珊', '介面設計與使用者體驗概念', 2800.00, '初級', 45, TRUE,  '2025-02-01 09:30:00', '2025-02-01 09:30:00'),
 (9, '資安概論與實務', '鄭凱文', '企業資訊安全與防護策略', 5000.00, '中級', 26, TRUE,  '2025-02-05 10:15:00', '2025-02-06 17:00:00'),
 (10,'全端開發專題實作', '許書豪', '前後端整合專案實戰課程', 7200.00, '中級,進階', 18, FALSE, '2025-02-08 14:00:00', '2025-02-08 14:00:00');
+
+
+####################
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS sp_articles_query0130 $$
+CREATE PROCEDURE sp_articles_query0130(
+  IN p_title       VARCHAR(150),
+  IN p_author      VARCHAR(50),
+  IN p_status      VARCHAR(20),
+  IN p_categoryCsv VARCHAR(1000)   -- 多選分類：用逗號分隔 e.g. "news,tech"
+)
+BEGIN
+  SELECT
+    id,
+    title,
+    content,
+    summary,
+    author,
+    category,
+    status,
+    views,
+    created_at,
+    updated_at
+  FROM articles
+  WHERE
+    (p_title IS NULL OR p_title = '' OR LOWER(title) LIKE CONCAT('%', LOWER(p_title), '%'))
+    AND (p_author IS NULL OR p_author = '' OR author = p_author)
+    AND (p_status IS NULL OR p_status = '' OR status = p_status)
+    AND (
+      p_categoryCsv IS NULL OR p_categoryCsv = ''
+      OR FIND_IN_SET(category, p_categoryCsv) > 0
+    )
+  ORDER BY title DESC, status DESC, id DESC;  -- 你也可以改成你想要的排序
+END $$
+
+DELIMITER ;
+
+
+CALL sp_articles_query0130(NULL, NULL, NULL, NULL); --測試用

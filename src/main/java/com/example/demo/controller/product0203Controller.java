@@ -1,14 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.excelExportUtil.ExcelExportUtil0202;
-import com.example.demo.req.CourseDel0202Req;
-import com.example.demo.req.CourseIns0202Req;
-import com.example.demo.req.CourseQuery0202Req;
-import com.example.demo.req.CourseUpd0202Req;
-import com.example.demo.res.CourseDon0202Res;
-import com.example.demo.res.CourseInit0202Res;
-import com.example.demo.res.CourseQuery0202Res;
-import com.example.demo.service.Course0202Service;
+import com.example.demo.excelExportUtil.ExcelExportUtil0203;
+import com.example.demo.req.ProducQuery0203Req;
+import com.example.demo.req.ProductDel0203Req;
+import com.example.demo.req.ProductIns0203Req;
+import com.example.demo.req.ProductUpd0203Req;
+import com.example.demo.res.ProductDon0203Res;
+import com.example.demo.res.ProductInit0203Res;
+import com.example.demo.res.ProductQuery0203Res;
+import com.example.demo.service.Product0203Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,53 +25,53 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/Course/0202")
+@RequestMapping("/Product/0203")
 @RequiredArgsConstructor
-public class Course0202Controller {
+public class product0203Controller {
 
-    private final Course0202Service course0202Service;
+    private final Product0203Service product0203Service;
 
     //頁面初始化
     @GetMapping("/init")
-    public List<CourseInit0202Res> init(){
-        return course0202Service.init();
+    public List<ProductInit0203Res> init(){
+        return product0203Service.init();
     }
 
     //查詢案衂
     @PostMapping("/query")
-    public List<CourseQuery0202Res> query(@RequestBody CourseQuery0202Req req){
-        return course0202Service.query(req);
+    public List<ProductQuery0203Res> query(@RequestBody ProducQuery0203Req req){
+        return product0203Service.query(req);
     }
 
 
     //刪除
     @GetMapping("/delete/{id}")
     public int del(@PathVariable String id){
-        CourseDel0202Req req = new CourseDel0202Req();
+        ProductDel0203Req req = new ProductDel0203Req();
         req.setId(id);
-        int rows = course0202Service.del(req);
+        int rows = product0203Service.del(req);
         return rows;
     }
 
     //新增
     @PostMapping("/insert")
-    public int insert(@RequestBody CourseIns0202Req req){
-        int rows = course0202Service.insert(req);
+    public int insert(@RequestBody ProductIns0203Req req){
+        int rows = product0203Service.insert(req);
         return rows;
     }
 
 
     //修改
     @PostMapping("/update")
-    public int update(@RequestBody CourseUpd0202Req req){
-        return course0202Service.update(req);
+    public int update(@RequestBody ProductUpd0203Req req){
+        return product0203Service.update(req);
     }
 
 
     //上傳檔案
     @PostMapping("/importExcel")
     public String importExcel(@RequestParam("file") MultipartFile file) throws Exception {
-        course0202Service.importExcel(file);
+        product0203Service.importExcel(file);
         return "匯入成功";
     }
 
@@ -79,19 +79,19 @@ public class Course0202Controller {
     //下載
     @PostMapping("/downloadExcel")
     public void downloadExcel(
-            @RequestBody CourseQuery0202Req req,
+            @RequestBody ProducQuery0203Req req,
             @RequestParam(defaultValue = "xlsx") String excelType,
             HttpServletResponse response
     ) throws Exception {
 
         //拿到結果
-        List<CourseDon0202Res> rows = course0202Service.downloadList(req);
+        List<ProductDon0203Res> rows = product0203Service.downloadList(req);
 
         //判斷使用者要下載的是不是xls
         boolean isXls = "xls".equalsIgnoreCase(excelType);
 
         //把「資料（rows）」轉成「Excel 檔案內容」，並用 byte[] 的形式回傳
-        byte[] bytes = ExcelExportUtil0202.buildApplyDetailExcel(rows, isXls);
+        byte[] bytes = ExcelExportUtil0203.buildApplyDetailExcel(rows, isXls);
 
         //起一個隨機檔名
         String fileName = UUID.randomUUID().toString();
@@ -114,10 +114,10 @@ public class Course0202Controller {
 // ========= 下面這一段是「轉呼叫另一台電腦 API」用的設定 =========
 
     // 你在 Postman 成功時拿到的 JSESSIONID（測試用，正式不可寫死）
-    private static final String JSESSIONID = "9D1C3C8745727767AE84E1745C682EBD";
+    private static final String JSESSIONID = "C8EE3CD9F45FDBBA13442987FE6A066B";
 
     // 你在 Postman 成功時拿到的 CSRF Token（測試用，正式不可寫死）
-    private static final String CSRF = "b1d318dd-d607-481e-89f0-02bc2c66dce9";
+    private static final String CSRF = "35275dd7-f977-4cdb-9172-e54bf430ac7c";
 
     // 建立一個 WebClient，用來從「你這台後端」去呼叫「192.168.10.118 那台後端」
 // baseUrl 代表之後所有請求都會以這個網址當開頭
@@ -128,7 +128,7 @@ public class Course0202Controller {
     // 對外提供一支 API
 // 讓前端可以呼叫這支 API
 // 真正會轉去呼叫 192.168.10.118 的，是下面 method 裡面的 WebClient
-    @PostMapping("/smr/a10/a16/query")
+    @PostMapping("/smr")
     public Mono<ResponseEntity<String>> proxy(@RequestBody String body) {
 
         // 使用 WebClient 發送一個 POST 請求到另一台電腦

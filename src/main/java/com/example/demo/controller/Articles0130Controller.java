@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.CorsConfig.ExcelExportUtil0130;
+import com.example.demo.excelExportUtil.ExcelExportUtil0130;
 import com.example.demo.req.*;
 import com.example.demo.res.ArticleDon0130Res;
 import com.example.demo.res.ArticleInit0130Res;
@@ -109,5 +109,11 @@ public class Articles0130Controller {
         }
     }
 
+
+    //查詢案衂
+    @PostMapping("/query2")
+    public List<ArticleQuery0130Res> query2(@RequestBody ArticleQuery0130Req req){
+        return articles0130Service.query(req);
+    }
 }
 

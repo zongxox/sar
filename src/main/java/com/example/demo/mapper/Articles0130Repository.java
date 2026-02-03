@@ -5,13 +5,17 @@ import com.example.demo.entity.Article;
 import com.example.demo.req.ArticleQuery0130Req;
 import com.example.demo.req.ArticleUpdQuery0130Req;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.criteria.*;
-import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class Articles0130Repository {
@@ -208,6 +212,58 @@ public class Articles0130Repository {
         em.persist(article);
         return 1;
     }
+
+
+    //查詢按鈕
+    @Transactional(readOnly = true)
+    public List<ArticleQuery0130DAO> query2(ArticleQuery0130Req req) {
+
+        // 1) category List -> "a,b,c"
+        String categoryCsv = null;
+        if (req.getCategory() != null && !req.getCategory().isEmpty()) {
+            categoryCsv = String.join(",", req.getCategory());
+        }
+
+        //呼叫 Stored Procedure
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("sp_articles_query0130");
+
+        // 2 需要那些參數 sp_articles_query0130
+        sp.registerStoredProcedureParameter("p_title", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_author", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_status", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_categoryCsv", String.class, ParameterMode.IN);
+
+        // 3 將參數丟到sp_articles_query0130裡面
+        sp.setParameter("p_title", trimToNull(req.getTitle()));
+        sp.setParameter("p_author", trimToNull(req.getAuthor()));
+        sp.setParameter("p_status", trimToNull(req.getStatus()));
+        sp.setParameter("p_categoryCsv", trimToNull(categoryCsv));
+
+        // 4) 執行 + 取結果
+        @SuppressWarnings("unchecked")
+        List<Object[]> rows = sp.getResultList();
+
+        // 5) Object[] -> 你的 DAO
+        return rows.stream().map(r -> new ArticleQuery0130DAO(
+                ((Number) r[0]).intValue(),     // id
+                (String) r[1],                  // title
+                (String) r[2],                  // content
+                (String) r[3],                  // summary
+                (String) r[4],                  // author
+                (String) r[5],                  // category
+                (String) r[6],                  // status
+                ((Number) r[7]).intValue(),     // views
+                ((Timestamp) r[8]).toLocalDateTime(),
+                ((Timestamp) r[9]).toLocalDateTime()
+        )) .collect(Collectors.toList());
+    }
+
+    private String trimToNull(String s) {
+        if (s == null) return null;
+        s = s.trim();
+        return s.isEmpty() ? null : s;
+    }
+
 
 }
 

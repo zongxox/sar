@@ -1,54 +1,36 @@
-package com.example.demo.entity;
+package com.example.demo.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "product")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDon0203Res {
     private Long id;                 // 商品ID
 
-    @Column(nullable = false, length = 100)
     private String name;             // 商品名稱
 
-    @Column(columnDefinition = "TEXT")
     private String description;      // 商品描述
 
-    @Column(nullable = false)
     private Integer price;           // 商品價格
 
-    @Column(nullable = false)
     private Integer stock;           // 庫存數量
 
-    @Column(length = 50)
     private String category;         // 商品分類
 
-    @Column(length = 50)
     private String brand;            // 商品品牌
 
-    @Column(length = 50, unique = true)
     private String sku;              // 商品編號(SKU)
 
-    @Column(length = 20)
     private String status;           // 商品狀態
 
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime createdTime; // 建立時間
 
-    @UpdateTimestamp
     private LocalDateTime updatedTime; // 更新時間
 }

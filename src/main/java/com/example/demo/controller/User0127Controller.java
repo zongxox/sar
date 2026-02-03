@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.CorsConfig.ExcelExportUtil;
+import com.example.demo.excelExportUtil.ExcelExportUtil;
 import com.example.demo.req.UserDel0127Req;
 import com.example.demo.req.UserInd0127Req;
 import com.example.demo.req.UserQuery0127Req;

@@ -298,4 +298,24 @@ public class Articles0130Service {
         //4.回傳整理完成的資料清單（供 Excel 匯出使用）
         return rows;
     }
+
+    //查詢按鈕
+    public List<ArticleQuery0130Res> query2(ArticleQuery0130Req req) {
+        List<ArticleQuery0130DAO> dao = f.query2(req);
+        List<ArticleQuery0130Res> res = new ArrayList<>();
+        for (ArticleQuery0130DAO s : dao) {
+            ArticleQuery0130Res articleQuery0130Res = new ArticleQuery0130Res();
+            BeanUtils.copyProperties(s, articleQuery0130Res);
+            if ("published".equals(articleQuery0130Res.getStatus())) {
+                articleQuery0130Res.setStatusName("已發布");
+            } else if ("draft".equals(articleQuery0130Res.getStatus())) {
+                articleQuery0130Res.setStatusName("草稿");
+            }
+            if(s.getViewsB() != null){
+                articleQuery0130Res.setViewsA(s.getViewsB());
+            }
+            res.add(articleQuery0130Res);
+        }
+        return res;
+    }
 }

@@ -1,6 +1,6 @@
-package com.example.demo.CorsConfig;
+package com.example.demo.excelExportUtil;
 
-import com.example.demo.res.CourseDon0202Res;
+import com.example.demo.res.ProductDon0203Res;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,10 +9,10 @@ import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ExcelExportUtil0202 {
+public class ExcelExportUtil0203 {
 
     //設置Excel 欄位總數有幾個欄位要處理,後面用於設置調欄位寬度
-    private static final int COL_COUNT = 10;
+    private static final int COL_COUNT = 11;
 
     //Excel日期顯示格式（這是 Excel 的格式，不是 Java格式）
     private static final String EXCEL_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -22,7 +22,7 @@ public class ExcelExportUtil0202 {
      * @param rows 查詢後、已整理好的資料
      * @return Excel 檔案的 byte[]
      */
-    public static byte[] buildApplyDetailExcel(List<CourseDon0202Res> rows, boolean isXls) throws Exception {
+    public static byte[] buildApplyDetailExcel(List<ProductDon0203Res> rows, boolean isXls) throws Exception {
 
         // 建立 Excel Workbook 與輸出用的 ByteArrayOutputStream
         // try-with-resources：結束後會自動關閉資源
@@ -62,14 +62,15 @@ public class ExcelExportUtil0202 {
             int c = 0;//初始化由0開始
 
             //建立每一個標題欄位,leftStyle是上面設置的樣式
-            createTextCell(header, c++, "課程ID", leftStyle);//0開始 往下就自增1
-            createTextCell(header, c++, "課程名稱", leftStyle);//12
-            createTextCell(header, c++, "授課老師姓名", leftStyle);//1
-            createTextCell(header, c++, "課程簡介", leftStyle);//2
-            createTextCell(header, c++, "課程價格", leftStyle);//3
-            createTextCell(header, c++, "課程等級", leftStyle);//4
-            createTextCell(header, c++, "課程最多可報名人數", leftStyle);//5
-            createTextCell(header, c++, "是否已上架", leftStyle);//6
+            createTextCell(header, c++, "商品id", leftStyle);//0開始 往下就自增1
+            createTextCell(header, c++, "商品名稱", leftStyle);//12
+            createTextCell(header, c++, "商品描述", leftStyle);//1
+            createTextCell(header, c++, "商品價格", leftStyle);//2
+            createTextCell(header, c++, "庫存數量", leftStyle);//3
+            createTextCell(header, c++, "商品分類", leftStyle);//4
+            createTextCell(header, c++, "商品品牌", leftStyle);//5
+            createTextCell(header, c++, "商品編號", leftStyle);//6
+            createTextCell(header, c++, "商品狀態", leftStyle);//6
             createTextCell(header, c++, "建立時間", leftStyle);//7
             createTextCell(header, c++, "更新時間", leftStyle);//8
 
@@ -80,38 +81,31 @@ public class ExcelExportUtil0202 {
 
             // service 查詢完資料並轉成 AdRes，controller 取得結果後交由 ExcelExportUtil
             // 將每筆 AdRes 依欄位順序逐筆寫入 Excel
-            for (CourseDon0202Res res : rows) {
+            for (ProductDon0203Res res : rows) {
                 Row row = sheet.createRow(r++);//在分頁1裡，建立 那一行(橫)欄位，順序要跟資料一致
                 int col = 0; //第一行的第一個欄位開始
 
-                // 1 系統流水編號
                 createTextCell(row, col++, n(res.getId()), leftStyle);//0
 
-                // 2 評估日期（目前當字串處理）
-                createTextCell(row, col++, n(res.getTeacherName()), leftStyle);
+                createTextCell(row, col++, n(res.getName()), leftStyle);
 
-                // 3 公司代號
                 createTextCell(row, col++, n(res.getDescription()), leftStyle);
 
-                // 4 檔案類型
                 createTextCell(row, col++, n(res.getPrice()), leftStyle);
 
-                // 5 上傳檔案存放路徑
-                createTextCell(row, col++, n(res.getLevel()), leftStyle);
+                createTextCell(row, col++, n(res.getStock()), leftStyle);
 
-                // 6 上傳檔案檔名
-                createTextCell(row, col++, n(res.getMaxStudents()), leftStyle);
+                createTextCell(row, col++, n(res.getCategory()), leftStyle);
 
-                // 7 上傳檔案檔名（原檔名）
-                createTextCell(row, col++, n(res.getIsPublished()), leftStyle);
+                createTextCell(row, col++, n(res.getBrand()), leftStyle);
 
+                createTextCell(row, col++, res.getSku(), dateStyle);
 
+                createTextCell(row, col++, res.getStatus(), dateStyle);
 
-                // 9 上傳檔案帳號
-                createDateCell(row, col++, res.getCreatedAt(), dateStyle);
+                createDateCell(row, col++, res.getCreatedTime(), dateStyle);
 
-                // 10 上傳檔案時間（Excel 真日期）
-                createDateCell(row, col++, res.getUpdatedAt(), dateStyle);
+                createDateCell(row, col++, res.getUpdatedTime(), dateStyle);
 
 
 
