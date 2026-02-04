@@ -311,13 +311,6 @@ public class TaskSchedule0204Service {
         List<TaskScheduleQuery0204DAO> rows = taskSchedule0204Repository.query(req);
 
 
-        // （可選）印一下確認真的有資料
-        System.out.println("PDF rows = " + rows.size());
-        if (!rows.isEmpty()) {
-            System.out.println("PDF first title = " + rows.get(0).getTitle());
-        }
-
-
         // 2) 讀 jrxml（路徑依你實際放的位置調整）
         // 例如你放在 src/main/resources/reports/taskSchedule0204.jrxml
         ClassPathResource jrxmlResource = new ClassPathResource("reports/taskSchedule0204.jrxml");
