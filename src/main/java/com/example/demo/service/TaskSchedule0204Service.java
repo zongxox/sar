@@ -11,8 +11,11 @@ import com.example.demo.res.TaskSchedule0204Res;
 import com.example.demo.res.TaskScheduleDon0204Res;
 import com.example.demo.res.TaskScheduleQuery0204Res;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -303,38 +303,44 @@ public class TaskSchedule0204Service {
         return rows;
     }
 
-//
-//    //讀jrxml檔案,編譯,產生報表物件
-//// 讀jrxml檔案,編譯,產生報表物件（帶查詢結果）
-//    public JasperPrint testLoadReport(ProducQuery0203Req req) throws Exception {
-//
-//        // 1) 查詢資料（你已經有 query(req)）
-//        List<ProductQuery0203Res> rows = query(req);
-//
-//        System.out.println("rows size = " + rows.size());
-//        if (!rows.isEmpty()) {
-//            System.out.println("first row id=" + rows.get(0).getId() + ", name=" + rows.get(0).getName());
-//        }
-//
-//
-//        // 2) 讀 jrxml
-//        InputStream is = this.getClass().getResourceAsStream("/reports/product0203.jrxml");
-//        if (is == null) {
-//            throw new RuntimeException("找不到 product0203.jrxml");
-//        }
-//
-//        // 3) 編譯
-//        JasperReport report = JasperCompileManager.compileReport(is);
-//
-//        // 4) 把查詢結果丟進 DataSource
-//        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rows);
-//
-//        // 5) 產生報表
-//        Map<String, Object> params = new HashMap<>();
-//        JasperPrint print = JasperFillManager.fillReport(report, params, ds);
-//
-//        return print;
-//    }
+
+    public byte[] generatePdf() throws Exception {
+
+        // 1) 查 DB：全部
+        TaskScheduleQuery0204Req req = new TaskScheduleQuery0204Req(); // 欄位全部 null = 不加 where = 全表
+        List<TaskScheduleQuery0204DAO> rows = taskSchedule0204Repository.query(req);
+
+
+        // （可選）印一下確認真的有資料
+        System.out.println("PDF rows = " + rows.size());
+        if (!rows.isEmpty()) {
+            System.out.println("PDF first title = " + rows.get(0).getTitle());
+        }
+
+
+        // 2) 讀 jrxml（路徑依你實際放的位置調整）
+        // 例如你放在 src/main/resources/reports/taskSchedule0204.jrxml
+        ClassPathResource jrxmlResource = new ClassPathResource("reports/taskSchedule0204.jrxml");
+        // 若你是放 src/main/resources/taskSchedule0204.jrxml，改成：
+        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule0204.jrxml");
+
+        JasperReport jasperReport;
+        try (InputStream jrxmlStream = jrxmlResource.getInputStream()) {
+            jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+        }
+
+        // 3) 填資料
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(rows);
+
+        Map<String, Object> params = new HashMap<>();
+        // params.put("xxx", "yyy"); // 若你 jrxml 有 parameters 才需要放
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+
+        // 4) 產生 PDF bytes
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+    }
+
 
 
 

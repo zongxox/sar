@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="NotoSansTC">
+        <normal><![CDATA[fonts/NotoSansTC-Regular.ttf]]></normal>
+        <bold><![CDATA[fonts/NotoSansTC-Bold.ttf]]></bold>
+        <italic><![CDATA[fonts/NotoSansTC-Regular.ttf]]></italic>
+        <boldItalic><![CDATA[fonts/NotoSansTC-Bold.ttf]]></boldItalic>
+
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+    </fontFamily>
+</fontFamilies>
