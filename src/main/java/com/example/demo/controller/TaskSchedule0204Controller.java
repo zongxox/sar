@@ -109,16 +109,21 @@ public class TaskSchedule0204Controller {
     }
 
 
-    @GetMapping("/pdf")
-    public ResponseEntity<byte[]> exportPdf() throws Exception {
+    @PostMapping("/pdf")
+    public ResponseEntity<byte[]> exportPdf(@RequestBody TaskScheduleQuery0204Req req) throws Exception {
 
-        byte[] pdfBytes = taskSchedule0204Service.generatePdf();
+        byte[] pdfBytes = taskSchedule0204Service.generatePdf(req);
 
         return ResponseEntity.ok()
+                //告訴瀏覽器,這是一個 PDF，要怎麼顯示／下載
                 .header(HttpHeaders.CONTENT_DISPOSITION,
+                        //inline 直接在瀏覽器開啟顯示
+                        //如果使用者另存檔，預設檔名叫 taskSchedule0204.pdf
+                        //.header(HttpHeaders.CONTENT_DISPOSITION, 直接跳下載視窗
+                        //"attachment; filename=taskSchedule0204.pdf") 不在瀏覽器內顯示
                         "inline; filename=taskSchedule0204.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdfBytes);
+                .contentType(MediaType.APPLICATION_PDF)//告訴瀏覽器,這份回傳的內容是 PDF 檔案
+                .body(pdfBytes);//真正送出去的資料內容
     }
 
 

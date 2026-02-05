@@ -17,8 +17,21 @@
     <field name="priority" class="java.lang.Integer"/>
     <field name="remark" class="java.lang.String"/>
     <field name="location" class="java.lang.String"/>
-    <field name="startTime" class="java.time.LocalDateTime"/>
-    <field name="endTime" class="java.time.LocalDateTime"/>
+    <field name="startTimeStr" class="java.lang.String"/>
+    <field name="endTimeStr" class="java.lang.String"/>
+    <field name="pageGroup" class="java.lang.Integer"/>
+
+<!--換頁-->
+    <group name="PageGroup">
+        <groupExpression><![CDATA[$F{pageGroup}]]></groupExpression>
+        <groupFooter>
+            <band height="1">
+                <break>
+                    <reportElement x="0" y="0" width="1" height="1"/>
+                </break>
+            </band>
+        </groupFooter>
+    </group>
 
 
     <title>
@@ -155,7 +168,7 @@
                           pdfEncoding="Identity-H"
                           isPdfEmbedded="true"/>
                 </textElement>
-                <text><![CDATA[startTime]]></text>
+                <text><![CDATA[startTimeStr]]></text>
             </staticText>
 
             <staticText>
@@ -167,7 +180,7 @@
                           pdfEncoding="Identity-H"
                           isPdfEmbedded="true"/>
                 </textElement>
-                <text><![CDATA[endTime]]></text>
+                <text><![CDATA[endTimeStr]]></text>
             </staticText>
 
         </band>
@@ -282,7 +295,7 @@
                           pdfEncoding="Identity-H"
                           isPdfEmbedded="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{startTime}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{startTimeStr}]]></textFieldExpression>
             </textField>
 
 
@@ -296,7 +309,7 @@
                           pdfEncoding="Identity-H"
                           isPdfEmbedded="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{endTime}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{endTimeStr}]]></textFieldExpression>
             </textField>
         </band>
     </detail>

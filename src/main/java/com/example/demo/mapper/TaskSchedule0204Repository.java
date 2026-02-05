@@ -1,9 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dao.TaskSchedule0204DAO;
-import com.example.demo.dao.TaskScheduleDel0204DAO;
-import com.example.demo.dao.TaskScheduleQuery0204DAO;
-import com.example.demo.dao.TaskScheduleUpd0204DAO;
+import com.example.demo.dao.*;
 import com.example.demo.entity.TaskSchedule;
 import com.example.demo.req.TaskScheduleQuery0204Req;
 import org.springframework.stereotype.Repository;
@@ -165,6 +162,9 @@ public class TaskSchedule0204Repository {
 
         return em.createQuery(cu).executeUpdate();
     }
+
+
+
 
 
 }

@@ -9,6 +9,7 @@ import com.example.demo.req.TaskScheduleQuery0204Req;
 import com.example.demo.req.TaskScheduleUpd0204Req;
 import com.example.demo.res.TaskSchedule0204Res;
 import com.example.demo.res.TaskScheduleDon0204Res;
+import com.example.demo.res.TaskSchedulePdf0204Res;
 import com.example.demo.res.TaskScheduleQuery0204Res;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
@@ -304,11 +305,72 @@ public class TaskSchedule0204Service {
     }
 
 
-    public byte[] generatePdf() throws Exception {
-
+    //pdf
+    public byte[] generatePdf(TaskScheduleQuery0204Req req) throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern(" HH:mm:ss");
         // 1) 查 DB：全部
-        TaskScheduleQuery0204Req req = new TaskScheduleQuery0204Req(); // 欄位全部 null = 不加 where = 全表
-        List<TaskScheduleQuery0204DAO> rows = taskSchedule0204Repository.query(req);
+        List<TaskScheduleQuery0204DAO> dao = taskSchedule0204Repository.query(req);
+
+        //由小到大排序
+        //拿a 跟 b 用字串比大小
+        // 使用 Collections.sort 對 dao 這個 List 進行排序
+        // 第二個參數是一個「比較規則」
+        Collections.sort(dao, new Comparator<TaskScheduleQuery0204DAO>() {
+
+            // 這個方法是排序時一定會被呼叫的比較方法
+            // a、b 代表要拿來比較的兩筆資料
+            @Override
+            public int compare(TaskScheduleQuery0204DAO a, TaskScheduleQuery0204DAO b) {
+
+                // 如果 a 的 location 跟 b 的 location 都是 null
+                // 代表兩筆資料在排序上視為一樣
+                if (a.getLocation() == null && b.getLocation() == null) {
+                    return 0;
+                }
+
+                // 如果只有 a 的 location 是 null
+                // 規則：null 排在後面
+                if (a.getLocation() == null) {
+                    return 1;   // 回傳正數，表示 a 排在 b 後面
+                }
+
+                // 如果只有 b 的 location 是 null
+                // 規則：null 排在後面
+                if (b.getLocation() == null) {
+                    return -1;  // 回傳負數，表示 a 排在 b 前面
+                }
+
+                // 兩筆的 location 都不是 null
+                // 直接用字串的 compareTo 來比較大小
+                return a.getLocation().compareTo(b.getLocation());
+            }
+        });
+
+
+        List<TaskSchedulePdf0204Res> res = new ArrayList<>();
+        for(TaskScheduleQuery0204DAO s : dao){
+            TaskSchedulePdf0204Res taskSchedulePdf0204Res = new TaskSchedulePdf0204Res();
+            BeanUtils.copyProperties(s,taskSchedulePdf0204Res);
+            taskSchedulePdf0204Res.setStartTimeStr(s.getStartTime().format(formatter));
+            taskSchedulePdf0204Res.setEndTimeStr(s.getEndTime().format(formatter1));
+            if ("doing".equals(taskSchedulePdf0204Res.getStatus())) {
+                taskSchedulePdf0204Res.setStatus("進行中");
+            } else if ("pending".equals(taskSchedulePdf0204Res.getStatus())) {
+                taskSchedulePdf0204Res.setStatus("待處理");
+            }
+
+            res.add(taskSchedulePdf0204Res);
+        }
+
+
+        //換頁 每10筆換一頁pdf
+        int i = 0;
+        for (TaskSchedulePdf0204Res r : res) {
+            r.setPageGroup(i / 10);
+            i++;
+        }
+
 
 
         // 2) 讀 jrxml（路徑依你實際放的位置調整）
@@ -322,8 +384,8 @@ public class TaskSchedule0204Service {
             jasperReport = JasperCompileManager.compileReport(jrxmlStream);
         }
 
-        // 3) 填資料
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(rows);
+        // 3 將查詢到的數據放到dataSource裡面
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(res);
 
         Map<String, Object> params = new HashMap<>();
         // params.put("xxx", "yyy"); // 若你 jrxml 有 parameters 才需要放
