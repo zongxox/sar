@@ -583,3 +583,36 @@ VALUES
 (8, 'ORD20250201008', '周怡君', '外接硬碟 2TB', 1, 3290.00, '基隆市仁愛區愛一路30號', '1', '2025-02-01 16:05:00', '2025-02-01 15:30:00'),
 (9, 'ORD20250201009', '許哲維', '電競滑鼠墊', 2, 980.00, '彰化縣員林市中山路二段150號', '0', '2025-02-01 10:30:00', '2025-02-01 16:10:00'),
 (10,'ORD20250201010', '蔡佳蓉', '筆電支架', 1, 890.00, '屏東市自由路60號', '1', '2025-02-01 17:00:00', '2025-02-01 16:30:00');
+
+
+#####################
+CREATE TABLE ticket (
+    id          BIGINT PRIMARY KEY,                         -- 客服單ID（唯一一個ID欄位）
+    user_name   VARCHAR(50) NOT NULL,                      -- 使用者名稱
+    title       VARCHAR(100) NOT NULL,                     -- 問題標題
+    content     VARCHAR(500),                              -- 問題內容（原本是 TEXT，改成 VARCHAR）
+    category    VARCHAR(30),                               -- 問題類型
+    priority    INT,                                       -- 優先順序
+    status      VARCHAR(20),                               -- 處理狀態
+    contact     VARCHAR(100),                              -- 聯絡方式
+
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,       -- 建立時間
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP        -- 更新時間
+                ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO ticket
+(id, user_name, title, content, category, priority, status, contact)
+VALUES
+(1, '小明', '無法登入系統', '輸入帳號密碼後一直顯示錯誤', '帳號問題', 1, 'IN_PROGRESS', 'ming@mail.com'),
+(2, '小美', '訂單查詢失敗', '查詢訂單時畫面空白', '系統問題', 2, 'NEW', 'mei@mail.com'),
+(3, '阿強', '忘記密碼', '忘記登入密碼需要重設', '帳號問題', 3, 'DONE', 'chiang@mail.com'),
+(4, '小華', '無法上傳圖片', '上傳頭像時顯示失敗', '功能異常', 2, 'IN_PROGRESS', 'hua@mail.com'),
+(5, '小琳', '資料顯示錯誤', '個人資料頁面顯示錯誤資訊', '資料問題', 2, 'NEW', 'lin@mail.com'),
+(6, '阿哲', '系統速度很慢', '操作時常常卡住', '效能問題', 3, 'NEW', 'zhe@mail.com'),
+(7, '小芳', '收不到驗證碼', '手機一直沒有收到簡訊', '通知問題', 1, 'IN_PROGRESS', 'fang@mail.com'),
+(8, '小志', '無法修改密碼', '修改密碼時顯示錯誤訊息', '帳號問題', 2, 'DONE', 'zhi@mail.com'),
+(9, '阿宏', '頁面顯示異常', '畫面排版跑掉', '畫面問題', 3, 'NEW', 'hong@mail.com'),
+(10,'小婷', '無法下載檔案', '點擊下載沒有反應', '功能異常', 2, 'IN_PROGRESS', 'ting@mail.com');
+
