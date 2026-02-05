@@ -6,6 +6,14 @@
         columnWidth="802"
         leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 
+<!--直接連db查詢標籤-->
+<!--    <queryString>-->
+<!--        <![CDATA[-->
+<!--        SELECT id, title, status-->
+<!--        FROM task_schedule-->
+<!--    ]]>-->
+<!--    </queryString>-->
+
     <queryString><![CDATA[]]></queryString>
 
     <!-- fields：對應後端傳進來的每一筆資料欄位 -->
@@ -239,7 +247,8 @@
             </textField>
 
             <!-- amount -->
-            <textField>
+<!-- 千分位<textField pattern="#,##0">-->
+            <textField pattern="#,##0">
                 <reportElement x="270" y="0" width="60" height="18"/>
                 <textElement>
                     <font fontName="NotoSansTC"
