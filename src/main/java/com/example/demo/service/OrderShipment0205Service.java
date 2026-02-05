@@ -7,12 +7,13 @@ import com.example.demo.req.OrderShipmentDel0205Req;
 import com.example.demo.req.OrderShipmentIns0205Req;
 import com.example.demo.req.OrderShipmentQuery0205Req;
 import com.example.demo.req.OrderShipmentUpd0205Req;
-import com.example.demo.res.OrderShipmentDon0205Res;
-import com.example.demo.res.OrderShipmentInit0205Res;
-import com.example.demo.res.OrderShipmentQuery0205Res;
+import com.example.demo.res.*;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,10 +28,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -310,5 +308,87 @@ public class OrderShipment0205Service {
     }
 
 
+    //pdf
+    public byte[] generatePdf(OrderShipmentQuery0205Req req) throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern(" HH:mm:ss");
+        // 1) 查 DB：全部
+        List<OrderShipmentQuery0205DAO> dao = orderShipment0205Repository.query(req);
+
+        //由小到大排序
+        //拿a 跟 b 用字串比大小
+        // 使用 Collections.sort 對 dao 這個 List 進行排序
+        // 第二個參數是一個「比較規則」
+        Collections.sort(dao, new Comparator<OrderShipmentQuery0205DAO>() {
+
+            // 這個方法是排序時一定會被呼叫的比較方法
+            // a、b 代表要拿來比較的兩筆資料
+            @Override
+            public int compare(OrderShipmentQuery0205DAO a, OrderShipmentQuery0205DAO b) {
+
+                // 如果 a 的 location 跟 b 的 location 都是 null
+                // 代表兩筆資料在排序上視為一樣
+                if (a.getProductName() == null && b.getProductName() == null) {
+                    return 0;
+                }
+
+                // 如果只有 a 的 location 是 null
+                // 規則：null 排在後面
+                if (a.getProductName() == null) {
+                    return 1;   // 回傳正數，表示 a 排在 b 後面
+                }
+
+                // 如果只有 b 的 location 是 null
+                // 規則：null 排在後面
+                if (b.getProductName() == null) {
+                    return -1;  // 回傳負數，表示 a 排在 b 前面
+                }
+
+                // 兩筆的 location 都不是 null
+                // 直接用字串的 compareTo 來比較大小
+                return a.getProductName().compareTo(b.getProductName());
+            }
+        });
+
+
+        List<OrderShipmentPdf0205Res> res = new ArrayList<>();
+        for(OrderShipmentQuery0205DAO s : dao){
+            OrderShipmentPdf0205Res orderShipmentPdf0205Res = new OrderShipmentPdf0205Res();
+            BeanUtils.copyProperties(s,orderShipmentPdf0205Res);
+            orderShipmentPdf0205Res.setShippedAtStr(s.getShippedAt().format(formatter));
+            orderShipmentPdf0205Res.setCreatedAtStr(s.getCreatedAt().format(formatter1));
+            if ("1".equals(orderShipmentPdf0205Res.getStatus())) {
+                orderShipmentPdf0205Res.setStatus("進行中");
+            } else if ("0".equals(orderShipmentPdf0205Res.getStatus())) {
+                orderShipmentPdf0205Res.setStatus("待處理");
+            }
+
+            res.add(orderShipmentPdf0205Res);
+        }
+
+
+
+        // 2) 讀 jrxml（路徑依你實際放的位置調整）
+        // 例如你放在 src/main/resources/reports/taskSchedule0204.jrxml
+        ClassPathResource jrxmlResource = new ClassPathResource("reports/OrderShipment0205.jrxml");
+        // 若你是放 src/main/resources/taskSchedule0204.jrxml，改成：
+        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule0204.jrxml");
+
+        JasperReport jasperReport;
+        try (InputStream jrxmlStream = jrxmlResource.getInputStream()) {
+            jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+        }
+
+        // 3 將查詢到的數據放到dataSource裡面
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(res);
+
+        Map<String, Object> params = new HashMap<>();
+        // params.put("xxx", "yyy"); // 若你 jrxml 有 parameters 才需要放
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+
+        // 4) 產生 PDF bytes
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+    }
 
 }

@@ -1,15 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.excelExportUtil.ExcelExportUtil0205;
-import com.example.demo.req.OrderShipmentDel0205Req;
-import com.example.demo.req.OrderShipmentIns0205Req;
-import com.example.demo.req.OrderShipmentQuery0205Req;
-import com.example.demo.req.OrderShipmentUpd0205Req;
+import com.example.demo.req.*;
 import com.example.demo.res.OrderShipmentDon0205Res;
 import com.example.demo.res.OrderShipmentInit0205Res;
 import com.example.demo.res.OrderShipmentQuery0205Res;
 import com.example.demo.service.OrderShipment0205Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -108,6 +108,22 @@ public class OrderShipment0205Controller {
     }
 
 
+    @PostMapping("/pdf")
+    public ResponseEntity<byte[]> exportPdf(@RequestBody OrderShipmentQuery0205Req req) throws Exception {
+
+        byte[] pdfBytes = orderShipment0205Service.generatePdf(req);
+
+        return ResponseEntity.ok()
+                //告訴瀏覽器,這是一個 PDF，要怎麼顯示／下載
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        //inline 直接在瀏覽器開啟顯示
+                        //如果使用者另存檔，預設檔名叫 taskSchedule0204.pdf
+                        //.header(HttpHeaders.CONTENT_DISPOSITION, 直接跳下載視窗
+                        //"attachment; filename=taskSchedule0204.pdf") 不在瀏覽器內顯示
+                        "inline; filename=OrderShipment0205.pdf")
+                .contentType(MediaType.APPLICATION_PDF)//告訴瀏覽器,這份回傳的內容是 PDF 檔案
+                .body(pdfBytes);//真正送出去的資料內容
+    }
 
 
 
