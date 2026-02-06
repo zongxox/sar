@@ -68,27 +68,27 @@ public class Ticket0206Service {
         int rows = ticket0206Repository.deleteById(dao);
         return rows;
     }
-
+//
 //    //新增
-//    public int insert(OrderShipmentIns0205Req req) {
-//        OrderShipmentIns0205DAO dao = new OrderShipmentIns0205DAO();
+//    public int insert(TaskScheduleIns0206Req req) {
+//        TaskScheduleIns0206DAO dao = new TaskScheduleIns0206DAO();
 //        BeanUtils.copyProperties(req, dao);
-//        OrderShipment orderShipment = OrderShipment.builder()
-//                .orderNo(dao.getOrderNo())
-//                .customerName(dao.getCustomerName())
-//                .productName(dao.getProductName())
-//                .quantity(Integer.valueOf(String.join(",", dao.getQuantity())))
-//                .totalPrice(new BigDecimal(dao.getTotalPrice()))
-//                .shippingAddress(dao.getShippingAddress())
-//                .status(dao.getStatus())
-//                .shippedAt(LocalDateTime.parse(dao.getShippedAt()))
-//                .createdAt(LocalDateTime.parse(dao.getCreatedAt()))
+//        TaskSchedule taskSchedule = TaskSchedule.builder()
+//                .title()
+//                .status()
+//                .type()
+//                .amount()
+//                .priority()
+//                .remark()
+//                .location()
+//                .startTime()
+//                .endTime()
 //                .build();
-//        int rows = orderShipment0205Repository.insert(orderShipment);
+//        int rows = ticket0206Repository.insert(taskSchedule);
 //        return rows;
 //    }
-//
-//
+
+
 //    //修改
 //    public int update(OrderShipmentUpd0205Req req) {
 //        Integer qty = Integer.valueOf(req.getQuantity().get(0));
@@ -358,10 +358,10 @@ public class Ticket0206Service {
 //
 //
 //        // 2) 讀 jrxml（路徑依你實際放的位置調整）
-//        // 例如你放在 src/main/resources/reports/taskSchedule0204.jrxml
+//        // 例如你放在 src/main/resources/reports/taskSchedule02041.jrxml
 //        ClassPathResource jrxmlResource = new ClassPathResource("reports/OrderShipment0205.jrxml");
-//        // 若你是放 src/main/resources/taskSchedule0204.jrxml，改成：
-//        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule0204.jrxml");
+//        // 若你是放 src/main/resources/taskSchedule02041.jrxml，改成：
+//        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule02041.jrxml");
 //
 //        JasperReport jasperReport;
 //        try (InputStream jrxmlStream = jrxmlResource.getInputStream()) {

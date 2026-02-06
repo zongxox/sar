@@ -1,6 +1,9 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dao.*;
+import com.example.demo.dao.OrderShipmentUpd0205DAO;
+import com.example.demo.dao.TicketDel0206DAO;
+import com.example.demo.dao.TicketInit0206DAO;
+import com.example.demo.dao.TicketQuery0206DAO;
 import com.example.demo.entity.OrderShipment;
 import com.example.demo.entity.Ticket;
 import com.example.demo.req.TicketQuery0206Req;
@@ -125,8 +128,8 @@ public class Ticket0206Repository {
 
     //新增
     @Transactional
-    public int insert(OrderShipment orderShipment) {
-        em.persist(orderShipment);
+    public int insert(Ticket ticket) {
+        em.persist(ticket);
         return 1;
     }
 

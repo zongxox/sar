@@ -369,10 +369,10 @@ public class OrderShipment0205Service {
 
 
         // 2) 讀 jrxml（路徑依你實際放的位置調整）
-        // 例如你放在 src/main/resources/reports/taskSchedule0204.jrxml
+        // 例如你放在 src/main/resources/reports/taskSchedule02041.jrxml
         ClassPathResource jrxmlResource = new ClassPathResource("reports/OrderShipment0205.jrxml");
-        // 若你是放 src/main/resources/taskSchedule0204.jrxml，改成：
-        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule0204.jrxml");
+        // 若你是放 src/main/resources/taskSchedule02041.jrxml，改成：
+        // ClassPathResource jrxmlResource = new ClassPathResource("taskSchedule02041.jrxml");
 
         JasperReport jasperReport;
         try (InputStream jrxmlStream = jrxmlResource.getInputStream()) {
