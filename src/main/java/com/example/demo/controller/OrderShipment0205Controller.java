@@ -112,7 +112,7 @@ public class OrderShipment0205Controller {
     public ResponseEntity<byte[]> exportPdf(@RequestBody OrderShipmentQuery0205Req req) throws Exception {
 
         byte[] pdfBytes = orderShipment0205Service.generatePdf(req);
-
+        //ResponseEntity是Spring用來包一個完整HTTP回應的物件。
         return ResponseEntity.ok()
                 //告訴瀏覽器,這是一個 PDF，要怎麼顯示／下載
                 .header(HttpHeaders.CONTENT_DISPOSITION,

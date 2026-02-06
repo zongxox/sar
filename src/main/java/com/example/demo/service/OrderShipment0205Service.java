@@ -311,7 +311,7 @@ public class OrderShipment0205Service {
     //pdf
     public byte[] generatePdf(OrderShipmentQuery0205Req req) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern(" HH:mm:ss");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm:ss");
         // 1) 查 DB：全部
         List<OrderShipmentQuery0205DAO> dao = orderShipment0205Repository.query(req);
 
@@ -385,6 +385,7 @@ public class OrderShipment0205Service {
         Map<String, Object> params = new HashMap<>();
         // params.put("xxx", "yyy"); // 若你 jrxml 有 parameters 才需要放
 
+        //沒有用到還是要放params
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 
         // 4) 產生 PDF bytes
