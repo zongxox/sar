@@ -1,10 +1,9 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dao.OrderShipmentUpd0205DAO;
 import com.example.demo.dao.TicketDel0206DAO;
 import com.example.demo.dao.TicketInit0206DAO;
 import com.example.demo.dao.TicketQuery0206DAO;
-import com.example.demo.entity.OrderShipment;
+import com.example.demo.dao.TicketUpd0206DAO;
 import com.example.demo.entity.Ticket;
 import com.example.demo.req.TicketQuery0206Req;
 import org.springframework.stereotype.Repository;
@@ -137,28 +136,28 @@ public class Ticket0206Repository {
 
     //修改
     @Transactional
-    public int update(OrderShipmentUpd0205DAO dao) {
+    public int update(TicketUpd0206DAO dao) {
 
         // 取得 CriteriaBuilder，用來建立 CriteriaUpdate 與更新條件
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         // 建立一個針對 ZauthCompanyJpa Entity 的 CriteriaUpdate（UPDATE 語法）
-        CriteriaUpdate<OrderShipment> cu =
-                cb.createCriteriaUpdate(OrderShipment.class);
+        CriteriaUpdate<Ticket> cu =
+                cb.createCriteriaUpdate(Ticket.class);
 
         // 指定要更新的 Entity（UPDATE ZauthCompanyJpa）
-        Root<OrderShipment> root = cu.from(OrderShipment.class);
+        Root<Ticket> root = cu.from(Ticket.class);
 
 
-        cu.set(root.get("orderNo"), dao.getOrderNo());
-        cu.set(root.get("customerName"), dao.getCustomerName());
-        cu.set(root.get("productName"), dao.getProductName());
-        cu.set(root.get("quantity"), dao.getQuantity());
-        cu.set(root.get("totalPrice"), dao.getTotalPrice());
-        cu.set(root.get("shippingAddress"), dao.getShippingAddress());
+        cu.set(root.get("userName"), dao.getUserName());
+        cu.set(root.get("title"), dao.getTitle());
+        cu.set(root.get("content"), dao.getContent());
+        cu.set(root.get("category"), dao.getCategory());
+        cu.set(root.get("priority"), dao.getPriority());
         cu.set(root.get("status"), dao.getStatus());
-        cu.set(root.get("shippedAt"), dao.getShippedAt());
+        cu.set(root.get("contact"), dao.getContact());
         cu.set(root.get("createdAt"), dao.getCreatedAt());
+        cu.set(root.get("updatedAt"), dao.getUpdatedAt());
 
 
         cu.where(cb.equal(root.get("id"), dao.getId()));

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TicketQuery0206Res {
+public class TicketUpd0206Res {
     private Long id;
 
     private String userName;
@@ -27,17 +27,9 @@ public class TicketQuery0206Res {
 
     private String status;
 
-    private String statusName;
-
     private String contact;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    private String createdAtStr;
-
-    private String updatedAtStr;
-
-    private Integer pageGroup;
 }
