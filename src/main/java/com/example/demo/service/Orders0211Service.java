@@ -1,59 +1,82 @@
 package com.example.demo.service;
 
-import com.example.demo.mapper.OrderShipment0210Mapper;
+import com.example.demo.dao.OrdersDel0211DAO;
+import com.example.demo.dao.OrdersInit0211DAO;
+import com.example.demo.dao.OrdersQuery0211DAO;
+import com.example.demo.entity.Orders;
+import com.example.demo.mapper.OrdersMapper;
+import com.example.demo.req.OrdersDel0211Req;
+import com.example.demo.req.OrdersQuery0211Req;
+import com.example.demo.res.OrdersInit0211Res;
+import com.example.demo.res.OrdersQuery0211Res;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 @AllArgsConstructor
 public class Orders0211Service {
 
-    private final OrderShipment0210Mapper orderShipment0210Mapper;
+    private final OrdersMapper ordersMapper;
 
-//    //初始化查詢
-//    public List<OrderShipmentInit0210Res> init() {
-//        List<OrderShipmentInit0210DAO> init = orderShipment0210Mapper.init();
-//        List<OrderShipmentInit0210Res> res = new ArrayList<>();
-//        for (OrderShipmentInit0210DAO s : init) {
-//            OrderShipmentInit0210Res orderShipmentInit0210Res = new OrderShipmentInit0210Res();
-//            BeanUtils.copyProperties(s, orderShipmentInit0210Res);
-//            if ("1".equals(orderShipmentInit0210Res.getStatus())) {
-//                orderShipmentInit0210Res.setStatusName("上架");
-//            } else if ("0".equals(orderShipmentInit0210Res.getStatus())) {
-//                orderShipmentInit0210Res.setStatusName("下架");
-//            }
-//            res.add(orderShipmentInit0210Res);
-//        }
-//        return res;
-//    }
-//
-////    //查詢按鈕
-//    public List<OrderShipmentQuery0210Res> query(OrderShipmentQuery0210Req req) {
-//        List<OrderShipmentQuery0210DAO> dao = orderShipment0210Mapper.query(req);
-//        List<OrderShipmentQuery0210Res> res = new ArrayList<>();
-//        for (OrderShipmentQuery0210DAO s : dao) {
-//            OrderShipmentQuery0210Res orderShipmentQuery0210Res = new OrderShipmentQuery0210Res();
-//            BeanUtils.copyProperties(s, orderShipmentQuery0210Res);
-//            if ("1".equals(orderShipmentQuery0210Res.getStatus())) {
-//                orderShipmentQuery0210Res.setStatusName("上架");
-//            } else if ("0".equals(orderShipmentQuery0210Res.getStatus())) {
-//                orderShipmentQuery0210Res.setStatusName("下架");
-//            }
-//            res.add(orderShipmentQuery0210Res);
-//        }
-//        return res;
-//    }
-//
-//    //刪除
-//    public int del(OrderShipmentDel0210Req req) {
-//        OrderShipmentDel0210DAO dao = OrderShipmentDel0210DAO.builder()
-//                .id(Integer.valueOf(req.getId()))
-//                .build();
-//        int rows = orderShipment0210Mapper.deleteById(dao);
-//        return rows;
-//    }
-//
+    //初始化查詢
+    public List<OrdersInit0211Res> init() {
+        List<OrdersInit0211DAO> init = ordersMapper.init();
+        List<OrdersInit0211Res> res = new ArrayList<>();
+        for (OrdersInit0211DAO s : init) {
+            OrdersInit0211Res ordersInit0211Res = new OrdersInit0211Res();
+            BeanUtils.copyProperties(s, ordersInit0211Res);
+            if ("paid".equals(ordersInit0211Res.getStatus())) {
+                ordersInit0211Res.setStatusName("已付款");
+            } else if ("pending".equals(ordersInit0211Res.getStatus())) {
+                ordersInit0211Res.setStatusName("待付款");
+            }else if ("cancel".equals(ordersInit0211Res.getStatus())) {
+                ordersInit0211Res.setStatusName("已取消");
+            }else if ("refund".equals(ordersInit0211Res.getStatus())) {
+                ordersInit0211Res.setStatusName("退款中");
+            }
+            res.add(ordersInit0211Res);
+        }
+        return res;
+    }
+
+    //查詢按鈕
+    public List<OrdersQuery0211Res> query(OrdersQuery0211Req req) {
+        OrdersQuery0211DAO param = new OrdersQuery0211DAO();
+        BeanUtils.copyProperties(req, param);
+        List<Orders> dao = ordersMapper.query(param);
+        List<OrdersQuery0211Res> res = new ArrayList<>();
+        for (Orders s : dao) {
+            OrdersQuery0211Res ordersQuery0211Res = new OrdersQuery0211Res();
+            BeanUtils.copyProperties(s, ordersQuery0211Res);
+            if ("paid".equals(ordersQuery0211Res.getStatus())) {
+                ordersQuery0211Res.setStatusName("已付款");
+            } else if ("pending".equals(ordersQuery0211Res.getStatus())) {
+                ordersQuery0211Res.setStatusName("待付款");
+            }else if ("cancel".equals(ordersQuery0211Res.getStatus())) {
+                ordersQuery0211Res.setStatusName("已取消");
+            }else if ("refund".equals(ordersQuery0211Res.getStatus())) {
+                ordersQuery0211Res.setStatusName("退款中");
+            }
+
+            res.add(ordersQuery0211Res);
+        }
+        return res;
+    }
+
+    //刪除
+    public int del(OrdersDel0211Req req) {
+        OrdersDel0211DAO dao = OrdersDel0211DAO.builder()
+                .id(Long.valueOf(req.getId()))
+                .build();
+        int rows = ordersMapper.delete(dao);
+        return rows;
+    }
+
 //    //新增
 //    public int insert(OrderShipmentIns0210Req req) {
 //        OrderShipmentIns0210DAO dao = new OrderShipmentIns0210DAO();

@@ -1,10 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.req.OrdersDel0211Req;
+import com.example.demo.req.OrdersQuery0211Req;
+import com.example.demo.res.OrdersInit0211Res;
+import com.example.demo.res.OrdersQuery0211Res;
 import com.example.demo.service.Orders0211Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -14,28 +18,28 @@ public class Orders0211Controller {
 
     private final Orders0211Service orders0211Service;
 
-//    //頁面初始化
-//    @GetMapping("/init")
-//    public List<OrderShipmentInit0210Res> init(){
-//        return orderShipment0210Service.init();
-//    }
-//
-//    //查詢案衂
-//    @PostMapping("/query")
-//    public List<OrderShipmentQuery0210Res> query(@RequestBody OrderShipmentQuery0210Req req){
-//        return orderShipment0210Service.query(req);
-//    }
-//
-//
-//    //刪除
-//    @GetMapping("/delete/{id}")
-//    public int del(@PathVariable String id){
-//        OrderShipmentDel0210Req req = new OrderShipmentDel0210Req();
-//        req.setId(id);
-//        int rows = orderShipment0210Service.del(req);
-//        return rows;
-//    }
-//
+    //頁面初始化
+    @GetMapping("/init")
+    public List<OrdersInit0211Res> init(){
+        return orders0211Service.init();
+    }
+
+    //查詢案衂
+    @PostMapping("/query")
+    public List<OrdersQuery0211Res> query(@RequestBody OrdersQuery0211Req req){
+        return orders0211Service.query(req);
+    }
+
+
+    //刪除
+    @GetMapping("/delete/{id}")
+    public int del(@PathVariable String id){
+        OrdersDel0211Req req = new OrdersDel0211Req();
+        req.setId(id);
+        int rows = orders0211Service.del(req);
+        return rows;
+    }
+
 //    //新增
 //    @PostMapping("/insert")
 //    public int insert(@RequestBody OrderShipmentIns0210Req req){

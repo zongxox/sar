@@ -81,4 +81,50 @@
     updated_at
     from orders
   </select>
+
+
+  <resultMap id="init" type="com.example.demo.dao.OrdersInit0211DAO">
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="order_type" jdbcType="VARCHAR" property="orderType" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+  </resultMap>
+
+<select id="init" resultMap="init">
+  select status,order_type,source from orders
+</select>
+
+<select id="query" resultMap="BaseResultMap">
+    select id,
+           order_no,
+           amount,
+           status,
+           remark,
+           order_type,
+           source,
+           customer,
+           created_at,
+           updated_at
+    from orders
+    <where>
+      <if test="customer != null and customer != ''">
+        AND customer LIKE concat('%',#{customer},'%')
+      </if>
+      <if test="status != null and status != ''">
+        AND status = #{status}
+      </if>
+      <if test="source != null and source != ''">
+        AND source = #{source}
+      </if>
+      <if test="orderType != null and orderType.size() > 0">
+        and order_type in
+        <foreach collection="orderType" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+</select>
+
+<delete id="delete" parameterType="com.example.demo.dao.OrdersDel0211DAO">
+  delete from orders where id = #{id}
+</delete>
 </mapper>

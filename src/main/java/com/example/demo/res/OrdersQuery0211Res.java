@@ -1,5 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.res;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Orders {
+public class OrdersQuery0211Res {
 
     private Long id;
 
@@ -29,9 +30,13 @@ public class Orders {
 
     private String customer;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date updatedAt;
+
+    private String statusName;
 
 
 }

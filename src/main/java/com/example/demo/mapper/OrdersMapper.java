@@ -1,9 +1,13 @@
 package com.example.demo.mapper;
 
+import com.example.demo.dao.OrdersDel0211DAO;
+import com.example.demo.dao.OrdersInit0211DAO;
+import com.example.demo.dao.OrdersQuery0211DAO;
 import com.example.demo.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface OrdersMapper {
     /**
@@ -45,4 +49,11 @@ public interface OrdersMapper {
      * @mbg.generated Tue Feb 10 15:14:54 GMT+08:00 2026
      */
     int updateByPrimaryKey(Orders record);
+
+
+    List<OrdersInit0211DAO> init();
+
+    List<Orders> query(OrdersQuery0211DAO dao);
+
+    int delete(OrdersDel0211DAO dao);
 }
