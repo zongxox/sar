@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OrderShipment0210Mapper">
+    <resultMap id="map" type="com.example.demo.dao.OrderShipmentInit0210DAO">
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="shipping_address" jdbcType="VARCHAR" property="shippingAddress" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+    </resultMap>
+    <select id="init" resultMap="map">
+        select quantity,shipping_address,status from order_shipment
+    </select>
+
+    <resultMap id="map1" type="com.example.demo.dao.OrderShipmentQuery0210DAO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="customer_name" jdbcType="VARCHAR" property="customerName"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="total_price" jdbcType="DECIMAL" property="totalPrice"/>
+        <result column="shipping_address" jdbcType="VARCHAR" property="shippingAddress" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="shipped_at" jdbcType="TIMESTAMP" property="shippedAt"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+    </resultMap>
+
+    <select id="query" resultMap="map1">
+        select id,order_no,customer_name,product_name,quantity,
+        total_price,shipping_address,status,shipped_at,created_at
+        from order_shipment
+        <where>
+            <if test="productName != null and productName != ''">
+                and product_name like concat('%', #{productName}, '%')
+            </if>
+
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+
+            <if test="shippingAddress != null and shippingAddress != ''">
+                AND shipping_address = #{shippingAddress}
+            </if>
+
+            <if test="quantity != null and quantity.size() > 0">
+                and quantity in
+                <foreach collection="quantity" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+<delete id="deleteById" parameterType="com.example.demo.dao.OrderShipmentDel0210DAO">
+    delete from order_shipment where id=#{id}
+</delete>
+
+<insert id="insert" parameterType="com.example.demo.entity.OrderShipment">
+    insert into order_shipment(order_no, customer_name, product_name, quantity, total_price, shipping_address, status,
+                               shipped_at, created_at)
+    VALUES(#{orderNo},#{customerName},#{productName},#{quantity},#{totalPrice},#{shippingAddress},#{status},#{shippedAt},#{createdAt})
+</insert>
+
+<update id="update" parameterType="com.example.demo.entity.OrderShipment">
+    update order_shipment
+    <set>
+        <if test="orderNo != null and orderNo != ''">
+            order_no = #{orderNo},
+        </if>
+
+        <if test="customerName != null and customerName != ''">
+            customer_name = #{customerName},
+        </if>
+
+        <if test="productName != null and productName != ''">
+            product_name = #{productName},
+        </if>
+
+        <if test="quantity != null">
+            quantity = #{quantity},
+        </if>
+
+        <if test="totalPrice != null and totalPrice != ''">
+            total_price = #{totalPrice},
+        </if>
+
+        <if test="shippingAddress != null and shippingAddress != ''">
+            shipping_address = #{shippingAddress},
+        </if>
+
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+
+        <if test="shippedAt != null">
+            shipped_at = #{shippedAt},
+        </if>
+
+        <if test="createdAt != null">
+            created_at = #{createdAt},
+        </if>
+    </set>
+    where id = #{id}
+</update>
+
+</mapper>

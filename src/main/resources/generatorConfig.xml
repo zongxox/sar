@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="mysql" targetRuntime="MyBatis3Simple">
+
+        <!-- 資料庫連線 -->
+        <jdbcConnection
+                driverClass="org.mariadb.jdbc.Driver"
+                connectionURL="jdbc:mariadb://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Taipei"
+                userId="root"
+                password="root"/>
+
+        <!-- 產生 Entity -->
+        <javaModelGenerator targetProject="src/main/java"
+                            targetPackage="com.example.demo.entity"/>
+
+        <!-- 產生 Mapper XML -->
+        <sqlMapGenerator targetProject="src/main/resources"
+                         targetPackage="mappers"/>
+
+        <!-- 產生 Mapper 介面 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetProject="src/main/java"
+                             targetPackage="com.example.demo.mapper"/>
+
+        <!-- 要逆向的資料表（先以 orders 為例） -->
+        <table tableName="orders" domainObjectName="Orders"/>
+    </context>
+</generatorConfiguration>

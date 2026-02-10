@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrderShipment0210" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ffaf24f2-f6d3-4353-abd8-7ed2228cf3f5">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="orderNo" class="java.lang.String"/>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="productName" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.Integer"/>
+	<field name="totalPrice" class="java.math.BigDecimal"/>
+	<field name="shippingAddress" class="java.lang.String"/>
+	<field name="statusName" class="java.lang.String"/>
+	<field name="shippedAtStr" class="java.lang.String"/>
+	<field name="createdAtStr" class="java.lang.String"/>
+	<field name="pageGroup" class="java.lang.Integer"/>
+	<variable name="total" class="java.math.BigDecimal" resetType="Group" resetGroup="pageGroup">
+		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+	</variable>
+	<variable name="Variable_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+	</variable>
+	<variable name="Variable_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+	</variable>
+	<group name="pageGroup" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{pageGroup}]]></groupExpression>
+		<groupHeader>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="52">
+				<textField pattern="#,##0">
+					<reportElement x="370" y="0" width="100" height="30" uuid="1e5eb3a3-9a77-4d6d-98fa-0687b1f14480"/>
+					<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="370" y="20" width="100" height="30" uuid="487adabf-fb42-4511-a908-952b6d003f7e"/>
+					<textFieldExpression><![CDATA[$V{Variable_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="340" y="0" width="50" height="30" uuid="2f4d0328-e8fd-47c7-b9d4-eff420ebec2f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="463e0a4d-194d-4c60-a9fe-e07146cc63bf"/>
+					</reportElement>
+					<textElement>
+						<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[小計:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="340" y="20" width="50" height="30" uuid="377773bc-ff67-4ac6-a031-b9e12c4044e5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="463e0a4d-194d-4c60-a9fe-e07146cc63bf"/>
+					</reportElement>
+					<textElement>
+						<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[累計:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="bcc72e30-c95d-447d-bcc9-5893ff8db78d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="776c4366-0636-43e9-985a-72c25955b6c5"/>
+				</reportElement>
+				<textElement>
+					<font size="20" pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[商品名稱:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="0" width="179" height="30" uuid="6f251e89-d181-419c-b591-ee94f945589b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ffbd055-da9e-47e2-8f66-42010f70a341"/>
+				</reportElement>
+				<textElement>
+					<font size="20" pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="30" uuid="e66e1796-9282-43e3-8683-269a6e5a2019">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="463e0a4d-194d-4c60-a9fe-e07146cc63bf"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[出貨紀錄ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="100" height="30" uuid="5ded7dd7-4ba4-4bd1-a398-4d0a735b01ad">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="776c4366-0636-43e9-985a-72c25955b6c5"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[訂單編號]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="70" height="30" uuid="eb851795-1c21-409a-a86e-b17dd1ac3e6f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eaf245b7-5ba0-4240-8d4f-f5d4785e9bb7"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[客戶姓名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="70" height="30" uuid="fb264fba-0526-42b2-ab1a-a5051a9f2c78">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ffbd055-da9e-47e2-8f66-42010f70a341"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[商品名稱]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="-1" width="50" height="30" uuid="a43e6027-f9c9-4275-8699-2075140d84d9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a24d7eb5-966e-4b67-b714-4a8e80fc5090"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[出貨數量]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="50" height="30" uuid="7885767a-6d9d-4a77-9d8f-4559cc4a7a44">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68862688-d895-497c-8757-28cb8957e97e"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[總金額]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="100" height="30" uuid="eb5974e2-5f76-4ae4-b237-6388803e1a1a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4528d68f-3405-4869-8f75-01e82c220e97"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[出貨地址]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="550" y="-1" width="50" height="30" uuid="eb0adb98-efa6-49b5-852f-b8904a8cc25e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9989a57e-5060-4498-bb68-a7feacea1353"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[出貨狀態]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="0" width="50" height="30" uuid="d9740613-bc74-4cce-b5e2-a6edb039b328">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3934cdfd-6e71-4673-b4f3-e2be07afc07b"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[出貨時間]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="0" width="100" height="30" uuid="7d85f827-8dcf-4fb1-a1b1-a47fa648d930">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e80b6ab-4305-45db-bcb5-25b62fc61e6d"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[建立時間]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="48" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="50" height="30" uuid="94a302c0-5d6f-49ab-9498-c62b217f23b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="463e0a4d-194d-4c60-a9fe-e07146cc63bf"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="100" height="30" uuid="749e3af3-f5ba-4260-8fe5-bc9246e31f13">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="776c4366-0636-43e9-985a-72c25955b6c5"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{orderNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="0" width="70" height="30" uuid="3e21c5ca-4069-4571-931f-494ca31ff683">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eaf245b7-5ba0-4240-8d4f-f5d4785e9bb7"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="70" height="30" uuid="8f949595-c47e-4f6f-9211-5d0076351799">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ffbd055-da9e-47e2-8f66-42010f70a341"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="3" width="50" height="30" uuid="d803e8fa-56cb-4cd0-af81-876652e0fb73">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a24d7eb5-966e-4b67-b714-4a8e80fc5090"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="370" y="4" width="50" height="30" uuid="6372d333-76bd-4ef5-8592-f39c25ffc66b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68862688-d895-497c-8757-28cb8957e97e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="4" width="100" height="30" uuid="6069e40f-5921-44a8-8bf7-d33159c2dd75">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4528d68f-3405-4869-8f75-01e82c220e97"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shippingAddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="550" y="4" width="50" height="30" uuid="640cfd47-ab1c-492e-b5c0-d32dd723ff54">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9989a57e-5060-4498-bb68-a7feacea1353"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{statusName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="620" y="4" width="50" height="30" uuid="0a0ceafa-31ed-46bf-a927-144aafe978d7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3934cdfd-6e71-4673-b4f3-e2be07afc07b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{shippedAtStr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="5" width="100" height="30" uuid="af369731-eef0-4a98-82fd-574f1911f17d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e80b6ab-4305-45db-bcb5-25b62fc61e6d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{createdAtStr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="48" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="370" y="18" width="100" height="30" uuid="3b37e0a5-ff60-4bc7-8f40-25291e8a23c6"/>
+				<textFieldExpression><![CDATA[$V{Variable_3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="18" width="50" height="30" uuid="f3ee7d70-a7eb-45ec-bc0a-9398fc796033">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="463e0a4d-194d-4c60-a9fe-e07146cc63bf"/>
+				</reportElement>
+				<textElement>
+					<font pdfFontName="fonts/NotoSansTC-Regular.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[總計:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
