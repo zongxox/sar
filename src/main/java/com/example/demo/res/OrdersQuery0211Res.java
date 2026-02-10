@@ -30,10 +30,10 @@ public class OrdersQuery0211Res {
 
     private String customer;
 
-    @JsonFormat(pattern = "'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date createdAt;
 
-    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date updatedAt;
 
     private String statusName;
