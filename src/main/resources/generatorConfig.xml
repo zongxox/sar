@@ -6,6 +6,19 @@
 <generatorConfiguration>
     <context id="mysql" targetRuntime="MyBatis3Simple">
 
+        <!-- Lombok -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LombokPlugin">
+            <!-- 注意：key 要寫 @Data / @Builder 這種 -->
+            <property name="@Data" value="true"/>
+            <property name="@AllArgsConstructor" value="true"/>
+            <property name="@NoArgsConstructor" value="true"/>
+            <property name="@Builder" value="true"/>
+
+            <!-- 可選：想要鏈式 setXX().setYY() -->
+            <!-- <property name="@Accessors(chain = true)" value="true"/> -->
+        </plugin>
+
+
         <!-- 資料庫連線 -->
         <jdbcConnection
                 driverClass="org.mariadb.jdbc.Driver"

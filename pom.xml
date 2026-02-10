@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
-			<version>3.3.3</version>
+			<version>3.3.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -106,11 +106,11 @@
 			<version>6.21.3</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mybatis.generator</groupId>
-			<artifactId>mybatis-generator-core</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.mybatis.generator</groupId>-->
+<!--			<artifactId>mybatis-generator-core</artifactId>-->
+<!--			<version>1.3.2</version>-->
+<!--		</dependency>-->
 
 
 
@@ -121,7 +121,7 @@
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>
-				<version>1.4.2</version>
+				<version>1.3.7</version>
 
 				<configuration>
 					<configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
@@ -129,13 +129,22 @@
 				</configuration>
 
 				<dependencies>
+					<!-- 給 MyBatis Generator 連 DB 用 -->
 					<dependency>
 						<groupId>org.mariadb.jdbc</groupId>
 						<artifactId>mariadb-java-client</artifactId>
-						<version>3.3.3</version>
+						<version>3.3.2</version>
+					</dependency>
+
+					<!-- Lombok plugin -->
+					<dependency>
+						<groupId>com.itfsw</groupId>
+						<artifactId>mybatis-generator-plugin</artifactId>
+						<version>1.3.10</version>
 					</dependency>
 				</dependencies>
 			</plugin>
+
 
 		</plugins>
 	</build>
