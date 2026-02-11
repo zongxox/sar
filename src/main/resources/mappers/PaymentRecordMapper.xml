@@ -25,4 +25,28 @@
 <select id="init" resultMap="init">
     select status,pay_method,source from payment_record
 </select>
+<select id="query" resultMap="PaymentRecordResultMap">
+    SELECT
+        id, receipt_no, payer_name, payee_name,
+        amount, status, pay_method, source,
+        create_time, update_time
+    FROM payment_record
+    <where>
+        <if test="receiptNo != null">
+            AND receipt_no LIKE CONCAT('%',#{receiptNo},'%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="source != null and source != ''">
+            AND source = #{source}
+        </if>
+        <if test="payMethod != null and payMethod.size() > 0">
+            and pay_method in
+            <foreach collection="payMethod" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
+</select>
 </mapper>

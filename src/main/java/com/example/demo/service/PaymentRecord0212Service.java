@@ -1,8 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.PrInit0212DAO;
+import com.example.demo.dao.PrQuery0212DAO;
+import com.example.demo.entity.PaymentRecord;
 import com.example.demo.mapper.PaymentRecordMapper;
+import com.example.demo.req.PrQuery0212Req;
 import com.example.demo.res.PrInit0212Res;
+import com.example.demo.res.PrQuery0212Res;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -35,24 +39,29 @@ public class PaymentRecord0212Service {
         }
         return res;
     }
-//
-////    //查詢按鈕
-//    public List<OrderShipmentQuery0210Res> query(OrderShipmentQuery0210Req req) {
-//        List<OrderShipmentQuery0210DAO> dao = orderShipment0210Mapper.query(req);
-//        List<OrderShipmentQuery0210Res> res = new ArrayList<>();
-//        for (OrderShipmentQuery0210DAO s : dao) {
-//            OrderShipmentQuery0210Res orderShipmentQuery0210Res = new OrderShipmentQuery0210Res();
-//            BeanUtils.copyProperties(s, orderShipmentQuery0210Res);
-//            if ("1".equals(orderShipmentQuery0210Res.getStatus())) {
-//                orderShipmentQuery0210Res.setStatusName("上架");
-//            } else if ("0".equals(orderShipmentQuery0210Res.getStatus())) {
-//                orderShipmentQuery0210Res.setStatusName("下架");
-//            }
-//            res.add(orderShipmentQuery0210Res);
-//        }
-//        return res;
-//    }
-//
+
+    //查詢按鈕
+    public List<PrQuery0212Res> query(PrQuery0212Req req) {
+        PrQuery0212DAO param = new PrQuery0212DAO();
+        BeanUtils.copyProperties(req,param);
+        List<PaymentRecord> dao = paymentRecordMapper.query(param);
+
+        List<PrQuery0212Res> res = new ArrayList<>();
+        for (PaymentRecord s : dao) {
+            PrQuery0212Res prQuery0212Res = new PrQuery0212Res();
+            BeanUtils.copyProperties(s, prQuery0212Res);
+            if ("PAID".equals(prQuery0212Res.getStatus())) {
+                prQuery0212Res.setStatusName("已付款");
+            } else if ("UNPAID".equals(prQuery0212Res.getStatus())) {
+                prQuery0212Res.setStatusName("未付款");
+            }else if ("CANCELLED".equals(prQuery0212Res.getStatus())) {
+                prQuery0212Res.setStatusName("取消");
+            }
+            res.add(prQuery0212Res);
+        }
+        return res;
+    }
+
 //    //刪除
 //    public int del(OrderShipmentDel0210Req req) {
 //        OrderShipmentDel0210DAO dao = OrderShipmentDel0210DAO.builder()

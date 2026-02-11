@@ -1,12 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.req.PrQuery0212Req;
 import com.example.demo.res.PrInit0212Res;
+import com.example.demo.res.PrQuery0212Res;
 import com.example.demo.service.PaymentRecord0212Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,13 +23,13 @@ public class PaymentRecord0212Controller {
         return paymentRecord0212Service.init();
     }
 
-//    //查詢案衂
-//    @PostMapping("/query")
-//    public List<OrderShipmentQuery0210Res> query(@RequestBody OrderShipmentQuery0210Req req){
-//        return orderShipment0210Service.query(req);
-//    }
-//
-//
+    //查詢案衂
+    @PostMapping("/query")
+    public List<PrQuery0212Res> query(@RequestBody PrQuery0212Req req){
+        return paymentRecord0212Service.query(req);
+    }
+
+
 //    //刪除
 //    @GetMapping("/delete/{id}")
 //    public int del(@PathVariable String id){
