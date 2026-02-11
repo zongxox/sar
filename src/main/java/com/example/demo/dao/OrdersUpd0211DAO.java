@@ -1,6 +1,5 @@
-package com.example.demo.res;
+package com.example.demo.dao;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrdersQuery0211Res {
-
+public class OrdersUpd0211DAO {
     private Long id;
 
     private String orderNo;
@@ -30,12 +28,9 @@ public class OrdersQuery0211Res {
 
     private String customer;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Taipei")
     private Date createdAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Taipei")
     private Date updatedAt;
 
-    private String statusName;
 
 }

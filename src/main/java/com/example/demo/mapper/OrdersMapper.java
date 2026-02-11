@@ -56,4 +56,9 @@ public interface OrdersMapper {
     List<Orders> query(OrdersQuery0211DAO dao);
 
     int delete(OrdersDel0211DAO dao);
+
+    int insert1(Orders orders);
+
+    int update(Orders orders);
+
 }

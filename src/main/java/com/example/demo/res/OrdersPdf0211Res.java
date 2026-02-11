@@ -1,6 +1,5 @@
 package com.example.demo.res;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrdersQuery0211Res {
+public class OrdersPdf0211Res {
 
     private Long id;
 
@@ -30,12 +29,16 @@ public class OrdersQuery0211Res {
 
     private String customer;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Taipei")
     private Date createdAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Taipei")
     private Date updatedAt;
 
     private String statusName;
+
+    private Integer pageGroup;
+
+    private String createdAtStr;
+
+    private String updatedAtStr;
 
 }
