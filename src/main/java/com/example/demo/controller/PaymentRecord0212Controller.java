@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.req.PrDel0212Req;
 import com.example.demo.req.PrQuery0212Req;
 import com.example.demo.res.PrInit0212Res;
 import com.example.demo.res.PrQuery0212Res;
@@ -30,15 +31,15 @@ public class PaymentRecord0212Controller {
     }
 
 
-//    //刪除
-//    @GetMapping("/delete/{id}")
-//    public int del(@PathVariable String id){
-//        OrderShipmentDel0210Req req = new OrderShipmentDel0210Req();
-//        req.setId(id);
-//        int rows = orderShipment0210Service.del(req);
-//        return rows;
-//    }
-//
+    //刪除
+    @GetMapping("/delete/{id}")
+    public int del(@PathVariable String id){
+        PrDel0212Req req = new PrDel0212Req();
+        req.setId(id);
+        int rows = paymentRecord0212Service.del(req);
+        return rows;
+    }
+
 //    //新增
 //    @PostMapping("/insert")
 //    public int insert(@RequestBody OrderShipmentIns0210Req req){

@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.PrDel0212DAO;
 import com.example.demo.dao.PrInit0212DAO;
 import com.example.demo.dao.PrQuery0212DAO;
 import com.example.demo.entity.PaymentRecord;
 import com.example.demo.mapper.PaymentRecordMapper;
+import com.example.demo.req.PrDel0212Req;
 import com.example.demo.req.PrQuery0212Req;
 import com.example.demo.res.PrInit0212Res;
 import com.example.demo.res.PrQuery0212Res;
@@ -62,15 +64,15 @@ public class PaymentRecord0212Service {
         return res;
     }
 
-//    //刪除
-//    public int del(OrderShipmentDel0210Req req) {
-//        OrderShipmentDel0210DAO dao = OrderShipmentDel0210DAO.builder()
-//                .id(Integer.valueOf(req.getId()))
-//                .build();
-//        int rows = orderShipment0210Mapper.deleteById(dao);
-//        return rows;
-//    }
-//
+    //刪除
+    public int del(PrDel0212Req req) {
+        PrDel0212DAO dao = PrDel0212DAO.builder()
+                .id(Long.valueOf(req.getId()))
+                .build();
+        int rows = paymentRecordMapper.delete(dao);
+        return rows;
+    }
+
 //    //新增
 //    public int insert(OrderShipmentIns0210Req req) {
 //        OrderShipmentIns0210DAO dao = new OrderShipmentIns0210DAO();

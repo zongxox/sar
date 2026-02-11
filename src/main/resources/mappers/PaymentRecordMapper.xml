@@ -49,4 +49,8 @@
         </if>
     </where>
 </select>
+
+<delete id="delete">
+    delete from payment_record where id = #{id}
+</delete>
 </mapper>
