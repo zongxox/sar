@@ -62,7 +62,7 @@ public class PaymentRecord0212Service {
         return res;
     }
 
-    //刪除
+//    //刪除
 //    public int del(OrderShipmentDel0210Req req) {
 //        OrderShipmentDel0210DAO dao = OrderShipmentDel0210DAO.builder()
 //                .id(Integer.valueOf(req.getId()))
