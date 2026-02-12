@@ -10,7 +10,13 @@ import java.util.List;
 
 @Mapper
 public interface PaymentRecordMapper {
-List<PrInit0212DAO> init();
-List<PaymentRecord> query(PrQuery0212DAO dao);
-int delete(PrDel0212DAO dao);
+    List<PrInit0212DAO> init();
+
+    List<PaymentRecord> query(PrQuery0212DAO dao);
+
+    int delete(PrDel0212DAO dao);
+
+    int insert(PaymentRecord paymentRecord);
+
+    int update(PaymentRecord paymentRecord);
 }

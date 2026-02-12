@@ -53,4 +53,52 @@
 <delete id="delete">
     delete from payment_record where id = #{id}
 </delete>
+
+
+<insert id="insert">
+    insert into payment_record(receipt_no, payer_name, payee_name, amount, status, pay_method, source, create_time,
+                               update_time)
+    values(#{receiptNo}, #{payerName}, #{payeeName}, #{amount}, #{status}, #{payMethod}, #{source}, #{createTime}, #{updateTime})
+</insert>
+
+<update id="update">
+    update payment_record
+    <set>
+        <if test="receiptNo != null">
+            receipt_no = #{receiptNo},
+        </if>
+
+        <if test="payerName != null and payerName != ''">
+            payer_name = #{payerName},
+        </if>
+
+        <if test="payeeName != null and payeeName != ''">
+            payee_name = #{payeeName},
+        </if>
+
+        <if test="amount != null">
+            amount = #{amount},
+        </if>
+
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+
+        <if test="payMethod != null and payMethod != ''">
+            pay_method = #{payMethod},
+        </if>
+
+        <if test="source != null and source != ''">
+            source = #{source},
+        </if>
+
+        <if test="createTime != null">
+            create_time = #{createTime},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime},
+        </if>
+    </set>
+    where id = #{id}
+</update>
 </mapper>
